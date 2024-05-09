@@ -23,6 +23,15 @@ class ProductManager {
     }
   }
 
+  async exists(id) {
+    try {
+      let products = await this.readProducts();
+      return products.find((prod) => prod.id == id);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async addProducts(product) {
     try {
       let productsOld = await this.readProducts();
@@ -45,10 +54,24 @@ class ProductManager {
 
   async getProductsById(id) {
     try {
-      let products = await this.readProducts();
-      let productById = products.find((prod) => prod.id == id);
-      if(!productById) return "Product not found"
+      let productById = await this.exists(id);
+      if (!productById) return "Product not found";
       return productById;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async updateProducts(id, product) {
+    try {
+      let products = await this.readProducts();
+      let productIndex = products.findIndex((prod) => prod.id === id);
+      if (productIndex === -1) {
+        return "Product not found";
+      }
+      products[productIndex] = { ...products[productIndex], ...product };
+      await this.writeProducts(products);
+      return "Updated product";
     } catch (error) {
       console.log(error);
     }
