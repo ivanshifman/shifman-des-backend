@@ -59,6 +59,9 @@ productsRouter.put("/:id", async (req, res) => {
     if (!productById || productById === "Product not found") {
       return res.status(404).send({ msg: "Product not found" });
     }
+    if (productById === "Invalid product data") {
+      return res.status(404).send({ msg: "Invalid product data" });
+    }
     res.status(200).json(productById);
   } catch (error) {
     res.status(500).send({ msg: "Error updating product" });

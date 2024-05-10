@@ -34,6 +34,30 @@ class ProductManager {
 
   async addProducts(product) {
     try {
+      const requiredKeys = [
+        "title",
+        "description",
+        "code",
+        "category",
+        "stock",
+        "price",
+      ];
+      if (!requiredKeys.every((key) => Object.keys(product).includes(key))) {
+        return "Invalid product data";
+      }
+
+      if (
+        !(
+          typeof product.title === "string" &&
+          typeof product.description === "string" &&
+          typeof product.code === "string" &&
+          typeof product.category === "string" &&
+          typeof product.stock === "number" &&
+          typeof product.price === "number"
+        )
+      ) {
+        return "Invalid product data";
+      }
       let productsOld = await this.readProducts();
       product.id = nanoid();
       let productsAll = [...productsOld, product];
@@ -69,7 +93,36 @@ class ProductManager {
       if (productIndex === -1) {
         return "Product not found";
       }
-      products[productIndex] = { ...products[productIndex], ...product };
+      const originalProduct = products[productIndex];
+      const requiredKeys = [
+        "title",
+        "description",
+        "code",
+        "category",
+        "stock",
+        "price",
+      ];
+      if (
+        !requiredKeys.every((key) => Object.keys(product).includes(key)) ||
+        Object.keys(product).length !== requiredKeys.length
+      ) {
+        return "Invalid product data";
+      }
+
+      if (
+        !(
+          typeof product.title === "string" &&
+          typeof product.description === "string" &&
+          typeof product.code === "string" &&
+          typeof product.category === "string" &&
+          typeof product.stock === "number" &&
+          typeof product.price === "number"
+        )
+      ) {
+        return "Invalid product data";
+      }
+
+      products[productIndex] = { ...originalProduct, ...product };
       await this.writeProducts(products);
       return "Updated product";
     } catch (error) {
