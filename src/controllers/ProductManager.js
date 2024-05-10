@@ -59,6 +59,7 @@ class ProductManager {
         return "Invalid product data";
       }
       let productsOld = await this.readProducts();
+      product.status = true;
       product.id = nanoid();
       let productsAll = [...productsOld, product];
       await this.writeProducts(productsAll);
