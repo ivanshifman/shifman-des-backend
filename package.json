@@ -2,7 +2,7 @@
   "name": "shifman-des-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js"
@@ -11,7 +11,9 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.19.2",
-    "nanoid": "^5.0.7"
+    "express-handlebars": "^7.1.2",
+    "nanoid": "^5.0.7",
+    "socket.io": "^4.7.5"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"

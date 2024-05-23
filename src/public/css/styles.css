@@ -1,0 +1,218 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container-total {
+    margin: 0 auto;
+}
+
+/*Form*/
+
+.container-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    background-image: linear-gradient(#380036, #0CBABA);
+}
+
+.container {
+    width: 650px;
+    padding: 28px;
+    margin: 0 28px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 15px 20px rgba(0, 0, 0, 0.6);
+}
+
+form h3 {
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-align: left;
+    color: #fff;
+    padding-bottom: 8px;
+    border-bottom: 1px solid silver;
+}
+
+form .content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+
+form .content .input-box {
+    display: flex;
+    flex-wrap: wrap;
+    width: 50%;
+    padding-bottom: 15px;
+}
+
+form .content .input-box:nth-child(2n) {
+    justify-content: end;
+}
+
+form .content .input-box label {
+    width: 95%;
+    color: #fff;
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 5px 0;
+}
+
+form .content .input-box input {
+    height: 40px;
+    width: 95%;
+    padding: 0 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    cursor: text;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+
+form .content .input-box input:is(:focus,:valid) {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+form .button-container {
+    margin: 15px 0;
+}
+
+form .button-container button {
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px;
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #ccc;
+    border: none;
+    border-radius: 5px;
+    background-image: linear-gradient(to right, #aa076b, #61045f);
+    cursor: pointer;
+    transition: .3s ease all;
+}
+
+form .button-container button:hover {
+    background-image: linear-gradient(to left, #aa076b, #61045f);
+}
+
+form .error-container {
+    margin: 15px 0;
+    text-align: center;
+}
+
+form .error-container .text-error {
+    font-size: 1.2rem;
+    color: rgb(98, 24, 8);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 400;
+}
+
+/*Products*/
+
+.container-products {
+    background-image: linear-gradient(#0CBABA,#380036 );
+    padding: 50px 0;
+    text-align: center;
+    padding-top: 3rem;
+}
+
+.container-products h2 {
+    color: #61045f;
+    text-shadow: rgb(243, 239, 239);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 4rem;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.container-products .products-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+.container-products .products-content .product {
+    text-align: center;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    transition: .3s ease all;
+}
+
+.container-products .products-content .product h3 {
+    font-size: 1.5rem;
+    color: #ccc;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+}
+
+.container-products .products-content .product p {
+    font-size: 1.3rem;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: #ccc;
+    margin-bottom: 5px;
+}
+
+.container-products .products-content .product .price {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #ccc;
+    text-shadow: 1px 1px 2px rgb(0, 0, 0);
+}
+
+.container-products .products-content .product .btn-delete {
+    display: inline-block;
+    padding: 7px 15px;
+    background-color: rgb(159, 11, 11);
+    color: #ccc;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: .5rem;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    transition: .3s ease all;
+}
+
+.container-products .products-content .product .btn-delete:hover {
+    background-color: rgb(87, 11, 11);
+}
+
+@media(max-width:600px) {
+    .container {
+        min-width: 280px;
+    }
+    form .content {
+        max-height: 380px;
+        overflow: auto;
+    }
+    form .content .input-box {
+        margin-bottom: 12px;
+        width: 100% !important;
+    }
+    form .content .input-box:nth-child(2n) {
+        justify-content: space-between;
+    }
+    form .content::-webkit-scrollbar {
+        width: 0;
+    }
+    form .button-container button {
+        padding: 5px;
+        font-size: 1.2rem;
+    }
+}
