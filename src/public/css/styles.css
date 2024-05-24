@@ -127,6 +127,15 @@ form .error-container .text-error {
     padding: 50px 0;
     text-align: center;
     padding-top: 3rem;
+    min-height: 50vh;
+}
+
+.container-products-home {
+    background-image: linear-gradient(#0CBABA,#380036 );
+    padding: 50px 0;
+    text-align: center;
+    padding-top: 3rem;
+    min-height: 100vh;
 }
 
 .container-products h2 {
@@ -135,7 +144,7 @@ form .error-container .text-error {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 4rem;
     text-transform: uppercase;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 }
 
 .container-products .products-content {
@@ -144,6 +153,14 @@ form .error-container .text-error {
     gap: 50px;
     margin: 0 auto;
     max-width: 1200px;
+    margin-top: 30px;
+}
+
+.container-products .products-no-find {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
 }
 
 .container-products .products-content .product {
@@ -165,7 +182,7 @@ form .error-container .text-error {
     font-size: 1.3rem;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     color: #ccc;
-    margin-bottom: 5px;
+    margin-bottom: 9px;
 }
 
 .container-products .products-content .product .price {
@@ -174,6 +191,7 @@ form .error-container .text-error {
     letter-spacing: 1px;
     color: #ccc;
     text-shadow: 1px 1px 2px rgb(0, 0, 0);
+    margin-top: 5px;
 }
 
 .container-products .products-content .product .btn-delete {
@@ -185,12 +203,36 @@ form .error-container .text-error {
     font-weight: 700;
     text-transform: uppercase;
     border-radius: .5rem;
+    cursor: pointer;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     transition: .3s ease all;
 }
 
 .container-products .products-content .product .btn-delete:hover {
     background-color: rgb(87, 11, 11);
+}
+
+.text-products-without {
+    font-size: 3rem;
+    color: #e11313;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 800;
+    text-shadow: 2px 3px 3px rgb(159, 11, 11);
+    text-align: center;
+}
+
+@media(max-width:1000px) {
+    .container-products .products-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        flex-wrap: wrap;
+    }
+
+    .container-products .products-content .product {
+        width: 80%;
+    }
 }
 
 @media(max-width:600px) {
@@ -214,5 +256,8 @@ form .error-container .text-error {
     form .button-container button {
         padding: 5px;
         font-size: 1.2rem;
+    }
+    .container-products h2 {
+        font-size: 2rem;
     }
 }

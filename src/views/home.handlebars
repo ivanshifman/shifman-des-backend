@@ -1,6 +1,22 @@
 <div class="container-total">
-  <div class="container-products">
+  <div class="container-products container-products-home">
     <h2>Products</h2>
-    <div class="products-content" id="productsContent"></div>
+    {{#if products.length}}
+      <div class="products-content">
+        {{#each products}}
+          <article class="product">
+            <div class="product-text">
+              <h3>{{title}}</h3>
+              <p>Category: {{category}}</p>
+              <p class="price">${{price}}</p>
+            </div>
+          </article>
+        {{/each}}
+      </div>
+    {{else}}
+      <div class="products-no-find">
+        <p class="text-products-without">There are no products</p>
+      </div>
+    {{/if}}
   </div>
 </div>
