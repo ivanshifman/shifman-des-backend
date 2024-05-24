@@ -1,15 +1,1 @@
-[
-  { "id": "f4CFsml0Pj1KDCI9NHHrm", "products": [] },
-  {
-    "id": "QcgylFrroyF_1xqLLgFxY",
-    "products": [{ "id": "2eBLq-ojWY8jVGaJi4Jpq", "quantity": 2 }]
-  },
-  {
-    "id": "q6wrJZtj_VCen9fEruWEi",
-    "products": [
-      { "id": "HcyhtCw7vMD1Jy-fhyS4g", "quantity": 3 },
-      { "id": "2eBLq-ojWY8jVGaJi4Jpq", "quantity": 1 }
-    ]
-  },
-  { "id": "-vVa8qvFQ4q_EmHGVOX6_", "products": [] }
-]
+[{"id":"wpBH3ej4kDisB5_zp8v96","products":[{"id":"_isuuKwWkuuA9pBlltmow","quantity":2},{"id":"oQsWa0f64NzcvHfxUwg47","quantity":1}]},{"id":"hkMI5em57Hk8MoEF5Rk0O","products":[]}]
