@@ -6,7 +6,7 @@ import { __dirname } from "./utils.js";
 import { Server } from "socket.io";
 import homeRouter from "./routes/home.router.js";
 import realTimeProductsRouter from "./routes/realTimeProducts.router.js";
-import ProductManager from "./controllers/ProductManager.js";
+import ProductManager from "./daos/filesystem/ProductManager.js";
 
 const app = express();
 const PORT = 8080;
