@@ -60,9 +60,10 @@ export const addProductInCart = async (cartId, prodId) => {
 
     const existsProductInCart = await cartDao.existsProdInCart(cartId, prodId);
     if (existsProductInCart) {
-      const quantity = existsProductInCart.products.find(
-        (p) => p.product._id.toString() === prodId
-      ).quantity++;
+      const existingProduct = existsProductInCart.products.find(
+        (p) => p.product.toString() === prodId
+      );
+      const quantity = existingProduct.quantity + 1;
       await cartDao.addProductInCart(cartId, prodId, quantity);
     } else {
       await cartDao.addProductInCart(cartId, prodId);
@@ -81,8 +82,9 @@ export const deleteProdInCart = async (cartId, prodId) => {
     const existProd = existCart.products.find(
       (p) => p.product._id.toString() === prodId
     );
-    if (!existCart || !existProd) return null;
-
+    if (!existCart || !existProd) {
+      throw new Error("Cart or Product not found");
+    }
     await cartDao.deleteProdInCart(cartId, prodId);
     return "Product deleted to cart";
   } catch (error) {

@@ -97,7 +97,7 @@ class CartDao {
   async updateQuantityProdInCart(cartId, prodId, quantity) {
     try {
       await CartModel.findOneAndUpdate(
-        { _id: cartId, "products.products": prodId },
+        { _id: cartId, "products.product": prodId },
         { $set: { "products.$.quantity": quantity } },
         { new: true }
       );

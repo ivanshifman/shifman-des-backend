@@ -52,10 +52,17 @@ export const updateCarts = async (req, res) => {
 export const deleteCarts = async (req, res) => {
   try {
     const { id } = req.params;
+    const cart = await service.getCartsById(id);
+
+    if (!cart) {
+      return res.status(404).send({ msg: "Cart not found" });
+    }
+
     const deleteCart = await service.deleteCarts(id);
     if (!deleteCart) {
       return res.status(404).send({ msg: "Cart could not be deleted" });
     }
+
     res.status(200).json(deleteCart);
   } catch (error) {
     res.status(500).send({ msg: error.message });
@@ -78,13 +85,12 @@ export const addProductInCart = async (req, res) => {
 
 export const deleteProdInCart = async (req, res) => {
   try {
-    const { cartId } = req.params;
-    const { prodId } = req.params;
-    const deleteProdToCart = service.deleteProdInCart(cartId, prodId);
+    const { cartId, prodId } = req.params;
+    const deleteProdToCart = await service.deleteProdInCart(cartId, prodId);
     if (!deleteProdToCart) {
       return res.status(404).send({ msg: "Cart or product not found" });
     }
-    res.status(200).json(deleteProdToCart);
+    res.status(200).json({ msg: `Product ${prodId} deleted from cart` });
   } catch (error) {
     res.status(500).send({ msg: error.message });
   }
@@ -95,6 +101,11 @@ export const updateQuantityProdInCart = async (req, res) => {
     const { cartId } = req.params;
     const { prodId } = req.params;
     const { quantity } = req.body;
+
+    if (Object.keys(req.body).length !== 1 || typeof quantity !== 'number') {
+      return res.status(404).send({ msg: "Invalid request body" });
+    }
+
     const updateProdQuantity = await service.updateQuantityProdInCart(
       cartId,
       prodId,
