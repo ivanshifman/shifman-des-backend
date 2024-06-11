@@ -7,6 +7,9 @@ import { Server } from "socket.io";
 import homeRouter from "./routes/home.router.js";
 import realTimeProductsRouter from "./routes/realTimeProducts.router.js";
 import ProductManager from "./daos/filesystem/ProductManager.js";
+import { initMongoDB } from "./daos/mongoDB/connection.js";
+
+await initMongoDB();
 
 const app = express();
 const PORT = 8080;
