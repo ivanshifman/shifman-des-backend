@@ -111,7 +111,8 @@ export const clearCart = async (cartId) => {
   try {
     const existCart = await cartDao.getCartsById(cartId);
     if (!existCart) return null;
-    else return "Empty cart";
+    await cartDao.clearCart(cartId);
+    return "Empty cart";
   } catch (error) {
     throw new Error(error.message);
   }

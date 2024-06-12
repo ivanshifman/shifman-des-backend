@@ -20,7 +20,9 @@ export const updateProductValidator = (req, res, next) => {
     (code && typeof code !== "string") ||
     (category && typeof category !== "string") ||
     (price && typeof price !== "number") ||
-    (stock && typeof stock !== "number")
+    (stock && typeof stock !== "number") ||
+    price <= 0 ||
+    stock < 0
   ) {
     return res.status(404).json({ msg: "Invalid body: invalid data types" });
   }
@@ -41,7 +43,7 @@ export const updateProductValidator = (req, res, next) => {
     return res.status(404).json({
       msg: "Invalid body: fields cannot be empty",
     });
-  }
+  } 
   
   else next();
 };

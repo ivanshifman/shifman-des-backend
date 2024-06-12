@@ -109,11 +109,12 @@ class CartDao {
 
   async clearCart(cartId) {
     try {
-      await CartModel.findByIdAndUpdate(
+      const updatedCart = await CartModel.findByIdAndUpdate(
         cartId,
         { $set: { products: [] } },
         { new: true }
       );
+      if (!updatedCart) throw new Error("Cart not found");
       return "Empty cart";
     } catch (error) {
       throw new Error(error.message);

@@ -11,8 +11,7 @@ export const getProducts = async (req, res) => {
       ? `http://localhost:8080/api/products?page=${products.prevPage}`
       : null;
 
-
-    if (!products) {
+    if (!products.docs.length && products.totalDocs === 0) {
       return res.status(404).send({ msg: "Products not found" });
     }
 

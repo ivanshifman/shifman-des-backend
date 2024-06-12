@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as controller from "../controllers/cart.controllers.js"
+import { updateCartsValidator } from "../middlewares/updateCartsValidator.js";
 
 const cartRouter = Router();
 
@@ -11,7 +12,7 @@ cartRouter.post("/", controller.addCarts);
 
 cartRouter.post("/:cartId/products/:prodId", controller.addProductInCart);
 
-cartRouter.put("/:id", controller.updateCarts);
+cartRouter.put("/:id", updateCartsValidator, controller.updateCarts);
 
 cartRouter.put("/:cartId/products/:prodId", controller.updateQuantityProdInCart);
 

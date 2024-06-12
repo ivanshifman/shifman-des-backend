@@ -30,7 +30,9 @@ export const productValidator = (req, res, next) => {
     typeof code !== "string" ||
     typeof category !== "string" ||
     typeof price !== "number" ||
-    typeof stock !== "number"
+    typeof stock !== "number" ||
+    stock < 0 ||
+    price <= 0
   ) {
     return res.status(404).json({ msg: "Invalid body: invalid data types" });
   }

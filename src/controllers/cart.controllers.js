@@ -44,6 +44,7 @@ export const updateCarts = async (req, res) => {
     if (!updateCart) {
       return res.status(404).send({ msg: "Cart not update" });
     }
+    res.status(200).json(updateCart);
   } catch (error) {
     res.status(500).send({ msg: error.message });
   }
