@@ -7,11 +7,26 @@ class ProductDao {
       let sortOrder = {};
       if (sort)
         sortOrder.price = sort === "asc" ? 1 : sort === "desc" ? -1 : null;
-      return await ProductModel.paginate(filter, {
+      const products = await ProductModel.paginate(filter, {
         page,
         limit,
         sort: sortOrder,
       });
+
+      const sanitizedProducts = products.docs.map((product) => ({
+        _id: product._id,
+        title: product.title,
+        description: product.description,
+        category: product.category,
+        code: product.code,
+        price: product.price,
+        stock: product.stock,
+      }));
+
+      return {
+        ...products,
+        docs: sanitizedProducts,
+      };
     } catch (error) {
       throw new Error(error.message);
     }

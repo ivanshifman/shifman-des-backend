@@ -1,11 +1,11 @@
 import { Router } from "express";
-import ProductManager from "../daos/filesystem/ProductManager.js";
+import { getProducts } from "../services/product.services.js";
 
 const homeRouter = Router();
-const productManager = new ProductManager();
 
 homeRouter.get("/", async (req, res) => {
-  const products = await productManager.getProducts();
+  const {page, limit, category, sort} = req.query
+  const products = await getProducts(page, limit, category, sort);
   res.render("home", { products });
 });
 

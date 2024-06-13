@@ -4,7 +4,6 @@ export const getProducts = async (req, res) => {
   try {
     const { page, limit, category, sort } = req.query;
     const products = await service.getProducts(page, limit, category, sort);
-
     const createLink = (page) => {
       let baseLink = `http://localhost:8080/api/products?page=${page}`;
       const params = [];

@@ -1,9 +1,9 @@
 <div class="container-total">
   <div class="container-products container-products-home">
     <h2>Products</h2>
-    {{#if products.length}}
+    {{#if products}}
       <div class="products-content">
-        {{#each products}}
+        {{#each products.docs}}
           <article class="product">
             <div class="product-text">
               <h3>{{title}}</h3>
