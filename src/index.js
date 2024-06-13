@@ -1,13 +1,12 @@
 import express from "express";
 import handlebars from "express-handlebars";
+import { __dirname } from "./utils.js";
+import { initMongoDB } from "./daos/mongoDB/connection.js";
 import productsRouter from "./routes/products.router.js";
 import cartRouter from "./routes/carts.router.js";
-import { __dirname } from "./utils.js";
-import { Server } from "socket.io";
-import homeRouter from "./routes/home.router.js";
 import realTimeProductsRouter from "./routes/realTimeProducts.router.js";
-import ProductManager from "./daos/filesystem/ProductManager.js";
-import { initMongoDB } from "./daos/mongoDB/connection.js";
+import homeRouter from "./routes/home.router.js";
+import initializeSocket from "./socket.js";
 
 await initMongoDB();
 
@@ -18,7 +17,7 @@ const httpServer = app.listen(PORT, () =>
   console.log(`Server in port ${PORT}`)
 );
 
-const socketServer = new Server(httpServer);
+await initializeSocket(httpServer);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -32,30 +31,3 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartRouter);
 app.use("/", homeRouter);
 app.use("/realTimeProducts", realTimeProductsRouter);
-
-const productManager = new ProductManager();
-
-socketServer.on("connection", (socket) => {
-  console.log(`New connection ${socket.id}`);
-
-  socket.on("disconnect", () => {
-    console.log(`Disconnect ${socket.id}`);
-  });
-
-  socket.on("requestProducts", async () => {
-    const products = await productManager.getProducts();
-    socket.emit("productsAll", products);
-  });
-
-  socket.on("newProduct", async (prod) => {
-    await productManager.addProducts(prod);
-    const products = await productManager.getProducts();
-    socketServer.emit("productsAll", products);
-  });
-
-  socket.on("deleteProduct", async (btnId) => {
-    await productManager.deleteProducts(btnId);
-    const products = await productManager.getProducts();
-    socketServer.emit("productsAll", products);
-  });
-});

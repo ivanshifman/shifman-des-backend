@@ -4,23 +4,35 @@ export const getProducts = async (req, res) => {
   try {
     const { page, limit, category, sort } = req.query;
     const products = await service.getProducts(page, limit, category, sort);
-    const next = products.hasNextPage
-      ? `http://localhost:8080/api/products?page=${products.nextPage}`
-      : null;
-    const prev = products.hasPrevPage
-      ? `http://localhost:8080/api/products?page=${products.prevPage}`
-      : null;
+
+    const createLink = (page) => {
+      let baseLink = `http://localhost:8080/api/products?page=${page}`;
+      const params = [];
+      if (limit) params.push(`limit=${limit}`);
+      if (category) params.push(`category=${category}`);
+      if (sort) params.push(`sort=${sort}`);
+      if (params.length > 0) baseLink += `&${params.join("&")}`;
+      return baseLink;
+    };
+
+    const next = products.hasNextPage ? createLink(products.nextPage) : null;
+    const prev = products.hasPrevPage ? createLink(products.prevPage) : null;
 
     if (!products.docs.length && products.totalDocs === 0) {
       return res.status(404).send({ msg: "Products not found" });
     }
 
+    if (page > products.totalPages) {
+      return res.status(404).send({ msg: "Page not found" });
+    }
+
     res.status(200).json({
+      status: "success",
       payload: products.docs,
       info: {
         count: products.totalDocs,
-        page: products.page,
         limit: products.limit,
+        page: products.page,
         totalPages: products.totalPages,
         nextLink: next,
         prevLink: prev,
