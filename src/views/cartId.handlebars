@@ -1,14 +1,15 @@
 <div class="container-total">
   <div class="container-products container-products-home">
-    <h2>Products</h2>
-    {{#if products.docs.length}}
+    <h2>Cart</h2>
+    {{#if cart.products.length}}
       <div class="products-content">
-        {{#each products.docs}}
+        {{#each cart.products}}
           <article class="product">
             <div class="product-text">
-              <h3>{{title}}</h3>
-              <p>Category: {{category}}</p>
-              <p class="price">${{price}}</p>
+              <h3>{{this.product.title}}</h3>
+              <p>Category: {{this.product.category}}</p>
+              <p>Quantity: {{this.quantity}}</p>
+              <p class="price">${{this.product.price}}</p>
             </div>
           </article>
         {{/each}}

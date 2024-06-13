@@ -6,6 +6,7 @@ import productsRouter from "./routes/products.router.js";
 import cartRouter from "./routes/carts.router.js";
 import realTimeProductsRouter from "./routes/realTimeProducts.router.js";
 import homeRouter from "./routes/home.router.js";
+import cartsIdViewRouter from "./routes/cartsIdView.router.js";
 import initializeSocket from "./socket.js";
 
 await initMongoDB();
@@ -30,4 +31,5 @@ app.set("views", `${__dirname}/views`);
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartRouter);
 app.use("/", homeRouter);
+app.use("/carts", cartsIdViewRouter);
 app.use("/realTimeProducts", realTimeProductsRouter);

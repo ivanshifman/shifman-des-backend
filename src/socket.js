@@ -1,4 +1,3 @@
-// socket.js
 import { Server } from "socket.io";
 import ProductManager from "./daos/filesystem/ProductManager.js";
 

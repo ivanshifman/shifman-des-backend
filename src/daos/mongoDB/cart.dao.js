@@ -22,7 +22,7 @@ class CartDao {
     try {
       const cartById = await CartModel.findById(id).populate(
         "products.product"
-      );
+      ).lean();
       if (!cartById) throw new Error("Cart not found");
       return cartById;
     } catch (error) {
