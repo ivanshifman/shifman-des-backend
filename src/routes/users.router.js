@@ -11,4 +11,6 @@ userRouter.post('/login', passportCall('login'), controller.loginResponse);
 
 userRouter.get('/current', passportCall('current'), controller.current);
 
+userRouter.get('/logout', passportCall('current'), controller.logOut)
+
 export default userRouter;

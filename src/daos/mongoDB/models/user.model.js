@@ -8,6 +8,7 @@ const userSchema = new Schema({
   password: { type: String, required: true },
   age: { type: Number, required: true, min: 0 },
   cart_id: { type: Schema.Types.ObjectId, ref: "carts" },
-});
+},
+{ versionKey: false });
 
 export const UserModel = model("users", userSchema);

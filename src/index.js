@@ -11,6 +11,8 @@ import cartsIdViewRouter from "./routes/cartsIdView.router.js";
 import initializeSocket from "./socket.js";
 import passport from "passport";
 import cookieParser from "cookie-parser";
+import { initializePassport } from "./passport/passport.config.local.js";
+import { initializePassportJwt } from "./passport/passport.config.jwt.js";
 
 await initMongoDB();
 
@@ -26,6 +28,8 @@ await initializeSocket(httpServer);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+initializePassport();
+initializePassportJwt();
 app.use(passport.initialize());
 app.use(express.static(`${__dirname}/public`));
 

@@ -5,24 +5,10 @@ import "dotenv/config";
 const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
 
-
 const jwtOptions = {
   jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
   secretOrKey: process.env.SECRET_KEY_JWT,
 };
-
-passport.use(
-  "current",
-  new JWTStrategy(jwtOptions, async (jwtPayload, done) => {
-    try {
-      const user = await services.getUserById(jwtPayload._id);
-      if (!user) return done(null, false, { message: "User not found" });
-      return done(null, user);
-    } catch (error) {
-      return done(error, false);
-    }
-  })
-);
 
 function cookieExtractor(req) {
   let token = null;
@@ -32,3 +18,18 @@ function cookieExtractor(req) {
 
   return token;
 }
+
+export const initializePassportJwt = () => {
+  passport.use(
+    "current",
+    new JWTStrategy(jwtOptions, async (jwtPayload, done) => {
+      try {
+        const user = await services.getUserById(jwtPayload._id);
+        if (!user) return done(null, false, { message: "User not found" });
+        return done(null, user);
+      } catch (error) {
+        return done(error, false);
+      }
+    })
+  );
+};

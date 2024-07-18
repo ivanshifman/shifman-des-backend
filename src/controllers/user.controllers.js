@@ -22,6 +22,11 @@ export const loginResponse = async (req, res) => {
   }
 };
 
+export const logOut = (req, res) => {
+  res.clearCookie("access_token");
+  res.status(200).json({ message: "Sesión cerrada" });
+}
+
 export const current = async (req, res) => {
   res.json({ message: "Bienvenido", user: req.user });
 };
