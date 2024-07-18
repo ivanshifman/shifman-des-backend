@@ -4,10 +4,13 @@ import { __dirname } from "./utils.js";
 import { initMongoDB } from "./daos/mongoDB/connection.js";
 import productsRouter from "./routes/products.router.js";
 import cartRouter from "./routes/carts.router.js";
+import userRouter from "./routes/users.router.js";
 import realTimeProductsRouter from "./routes/realTimeProducts.router.js";
 import homeRouter from "./routes/home.router.js";
 import cartsIdViewRouter from "./routes/cartsIdView.router.js";
 import initializeSocket from "./socket.js";
+import passport from "passport";
+import cookieParser from "cookie-parser";
 
 await initMongoDB();
 
@@ -22,6 +25,8 @@ await initializeSocket(httpServer);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(passport.initialize());
 app.use(express.static(`${__dirname}/public`));
 
 app.engine("handlebars", handlebars.engine());
@@ -30,6 +35,7 @@ app.set("views", `${__dirname}/views`);
 
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartRouter);
+app.use("/api/auth", userRouter);
 app.use("/", homeRouter);
 app.use("/carts", cartsIdViewRouter);
 app.use("/realTimeProducts", realTimeProductsRouter);
