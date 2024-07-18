@@ -5,11 +5,6 @@ import "dotenv/config";
 const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
 
-const jwtOptions = {
-  jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
-  secretOrKey: process.env.SECRET_KEY_JWT,
-};
-
 function cookieExtractor(req) {
   let token = null;
   if (req && req.cookies) {
@@ -18,6 +13,11 @@ function cookieExtractor(req) {
 
   return token;
 }
+
+const jwtOptions = {
+  jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+  secretOrKey: process.env.SECRET_KEY_JWT,
+};
 
 export const initializePassportJwt = () => {
   passport.use(

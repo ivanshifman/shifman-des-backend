@@ -9,6 +9,6 @@ export const generateToken = (user) => {
   };
 
   return jwt.sign(payload, process.env.SECRET_KEY_JWT, {
-    expiresIn: "10m",
+    expiresIn: "5m",
   });
 };

@@ -10,7 +10,8 @@ export const passportCall = (strategy) => {
           return next(err);
         }
         if (!user) {
-          return res.status(401).send({ message: info.messages ? info.messages : info.toString() });
+          const errorMessage = info?.message || info?.toString() || "Unauthorized";
+          return res.status(401).send({ message: errorMessage });
         }
         req.user = user;
         next();

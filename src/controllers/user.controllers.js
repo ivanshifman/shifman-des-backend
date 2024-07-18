@@ -15,7 +15,7 @@ export const loginResponse = async (req, res) => {
       email: req.user.email,
       role: req.user.role,
     });
-    res.cookie("access_token", token, { httpOnly: true, maxAge: 600000 });
+    res.cookie("access_token", token, { httpOnly: true, maxAge: 300000 });
     res.send({ message: "Session started", token: token });
   } catch (error) {
     res.status(500).send({ msg: error.message });
@@ -24,9 +24,26 @@ export const loginResponse = async (req, res) => {
 
 export const logOut = (req, res) => {
   res.clearCookie("access_token");
-  res.status(200).json({ message: "Sesión cerrada" });
+  res.status(200).json({ message: "Session closed" });
 }
 
 export const current = async (req, res) => {
-  res.json({ message: "Bienvenido", user: req.user });
+  try {
+    const user = req.user;
+    const { _id, first_name, last_name, email, role, age } = user;
+    
+    res.json({
+      message: "Welcome",
+      user: {
+        _id,
+        first_name,
+        last_name,
+        email,
+        role,
+        age,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };

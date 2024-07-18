@@ -1,5 +1,5 @@
 import UserDao from "../daos/mongoDB/user.dao.js";
-import { comparePassword, createHash } from "../utils/hashFunctions.js";
+import { comparePassword } from "../utils/hashFunctions.js";
 
 const userDao = new UserDao();
 
