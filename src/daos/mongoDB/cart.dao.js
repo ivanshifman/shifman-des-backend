@@ -3,8 +3,7 @@ import { CartModel } from "./models/cart.model.js";
 class CartDao {
   async addCarts() {
     try {
-      await CartModel.create({ products: [] });
-      return "Cart added";
+      return await CartModel.create({ products: [] });
     } catch (error) {
       throw new Error(error.message);
     }

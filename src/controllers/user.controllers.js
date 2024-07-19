@@ -25,13 +25,13 @@ export const loginResponse = async (req, res) => {
 export const logOut = (req, res) => {
   res.clearCookie("access_token");
   res.status(200).json({ message: "Session closed" });
-}
+};
 
 export const current = async (req, res) => {
   try {
     const user = req.user;
-    const { _id, first_name, last_name, email, role, age } = user;
-    
+    const { _id, first_name, last_name, email, role, age, cart_id } = user;
+
     res.json({
       message: "Welcome",
       user: {
@@ -41,6 +41,7 @@ export const current = async (req, res) => {
         email,
         role,
         age,
+        cart_id
       },
     });
   } catch (error) {
