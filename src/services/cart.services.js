@@ -22,15 +22,15 @@ export const getCartsById = async (id) => {
   }
 };
 
-export const addCarts = async () => {
-  try {
-    const newCart = await cartDao.addCarts();
-    if (!newCart) return null;
-    else return "Cart added";
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
+// export const addCarts = async () => {
+//   try {
+//     const newCart = await cartDao.addCarts();
+//     if (!newCart) return null;
+//     else return "Cart added";
+//   } catch (error) {
+//     throw new Error(error.message);
+//   }
+// };
 
 export const updateCarts = async (id, prod) => {
   try {

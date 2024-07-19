@@ -14,8 +14,8 @@ export const getCarts = async (req, res) => {
 
 export const getCartsById = async (req, res) => {
   try {
-    const { id } = req.params;
-    const cartById = await service.getCartsById(id);
+    const { cartId } = req.params;
+    const cartById = await service.getCartsById(cartId);
     if (!cartById) {
       return res.status(404).send({ msg: "Cart not found" });
     }
@@ -25,22 +25,22 @@ export const getCartsById = async (req, res) => {
   }
 };
 
-export const addCarts = async (req, res) => {
-  try {
-    const newCart = await service.addCarts();
-    if (!newCart) {
-      return res.status(404).send({ msg: "Product could not be added" });
-    }
-    res.status(200).json(newCart);
-  } catch (error) {
-    res.status(500).send({ msg: error.message });
-  }
-};
+// export const addCarts = async (req, res) => {
+//   try {
+//     const newCart = await service.addCarts();
+//     if (!newCart) {
+//       return res.status(404).send({ msg: "Product could not be added" });
+//     }
+//     res.status(200).json(newCart);
+//   } catch (error) {
+//     res.status(500).send({ msg: error.message });
+//   }
+// };
 
 export const updateCarts = async (req, res) => {
   try {
-    const { id } = req.params;
-    const updateCart = await service.updateCarts(id, req.body);
+    const { cartId } = req.params;
+    const updateCart = await service.updateCarts(cartId, req.body);
     if (!updateCart) {
       return res.status(404).send({ msg: "Cart not update" });
     }
@@ -52,8 +52,8 @@ export const updateCarts = async (req, res) => {
 
 export const deleteCarts = async (req, res) => {
   try {
-    const { id } = req.params;
-    const cart = await service.getCartsById(id);
+    const { cartId } = req.params;
+    const cart = await service.getCartsById(cartId);
 
     if (!cart) {
       return res.status(404).send({ msg: "Cart not found" });
