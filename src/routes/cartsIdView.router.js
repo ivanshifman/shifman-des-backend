@@ -1,9 +1,12 @@
 import { Router } from "express";
 import { getCartsById } from "../services/cart.services.js";
+import { passportCall } from "../utils/passportCall.js";
+import { authorizeCart } from "../middlewares/cartValidator.js";
 
 const cartsIdViewRouter = Router();
 
-cartsIdViewRouter.get("/:cartId", async (req, res) => {
+cartsIdViewRouter.get("/:cartId", passportCall("current"),
+authorizeCart, async (req, res) => {
   try {
     const { cartId } = req.params;
     const cart = await getCartsById(cartId);

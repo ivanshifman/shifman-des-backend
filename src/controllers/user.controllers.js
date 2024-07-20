@@ -2,7 +2,7 @@ import { generateToken } from "../utils/jwtFunctions.js";
 
 export const registerResponse = (req, res) => {
   try {
-    res.status(201).send("User register");
+    res.status(201).send({ message: "User register" });
   } catch (error) {
     res.status(500).send({ msg: error.message });
   }
@@ -41,7 +41,7 @@ export const current = async (req, res) => {
         email,
         role,
         age,
-        cart_id
+        cart_id,
       },
     });
   } catch (error) {

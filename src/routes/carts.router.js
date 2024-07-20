@@ -3,10 +3,11 @@ import * as controller from "../controllers/cart.controllers.js";
 import { updateCartsValidator } from "../middlewares/updateCartsValidator.js";
 import { authorizeCart } from "../middlewares/cartValidator.js";
 import { passportCall } from "../utils/passportCall.js";
+import { isAdmin } from "../middlewares/auth.js";
 
 const cartRouter = Router();
 
-cartRouter.get("/", controller.getCarts);
+cartRouter.get("/", passportCall("current"), isAdmin, controller.getCarts);
 
 cartRouter.get(
   "/:cartId",

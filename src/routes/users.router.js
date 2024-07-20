@@ -1,7 +1,10 @@
 import { Router } from "express";
 import * as controller from "../controllers/user.controllers.js";
 import { passportCall } from "../utils/passportCall.js";
-import { validateRegister } from "../middlewares/userFieldsValidator.js";
+import {
+  validateLogin,
+  validateRegister,
+} from "../middlewares/userFieldsValidator.js";
 import { authenticated } from "../middlewares/auth.js";
 
 const userRouter = Router();
@@ -14,7 +17,12 @@ userRouter.post(
   controller.registerResponse
 );
 
-userRouter.post("/login", passportCall("login"), controller.loginResponse);
+userRouter.post(
+  "/login",
+  validateLogin,
+  passportCall("login"),
+  controller.loginResponse
+);
 
 userRouter.get("/current", passportCall("current"), controller.current);
 
