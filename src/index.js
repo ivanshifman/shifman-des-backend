@@ -2,17 +2,12 @@ import express from "express";
 import handlebars from "express-handlebars";
 import { __dirname } from "./utils.js";
 import { initMongoDB } from "./daos/mongoDB/connection.js";
-import productsRouter from "./routes/products.router.js";
-import cartRouter from "./routes/carts.router.js";
-import userRouter from "./routes/users.router.js";
-import realTimeProductsRouter from "./routes/realTimeProducts.router.js";
-import homeRouter from "./routes/home.router.js";
-import cartsIdViewRouter from "./routes/cartsIdView.router.js";
 import initializeSocket from "./socket.js";
 import passport from "passport";
 import cookieParser from "cookie-parser";
 import { initializePassport } from "./passport/passport.config.local.js";
 import { initializePassportJwt } from "./passport/passport.config.jwt.js";
+import MainRouter from "./routes/index.router.js";
 
 await initMongoDB();
 
@@ -37,9 +32,5 @@ app.engine("handlebars", handlebars.engine());
 app.set("view engine", "handlebars");
 app.set("views", `${__dirname}/views`);
 
-app.use("/api/products", productsRouter);
-app.use("/api/carts", cartRouter);
-app.use("/api/auth", userRouter);
-app.use("/", homeRouter);
-app.use("/carts", cartsIdViewRouter);
-app.use("/realTimeProducts", realTimeProductsRouter);
+const mainRouter = new MainRouter();
+app.use("/", mainRouter.getRouter());

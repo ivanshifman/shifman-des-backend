@@ -2,9 +2,9 @@ export const productValidator = (req, res, next) => {
   const { title, description, code, price, stock, category } = req.body;
 
   if (!title || !description || !code || !price || !stock || !category) {
-    return res
-      .status(404)
-      .json({ msg: "Invalid body: missing required fields" });
+    return res.sendUserError(404, {
+      message: "Invalid body: missing required fields",
+    });
   }
 
   const allowedKeys = [
@@ -19,8 +19,8 @@ export const productValidator = (req, res, next) => {
     (key) => !allowedKeys.includes(key)
   );
   if (additionalKeys.length > 0) {
-    return res.status(404).json({
-      msg: "Invalid body: additional keys found",
+    return res.sendUserError(404, {
+      message: "Invalid body: additional keys found",
     });
   }
 
@@ -34,7 +34,9 @@ export const productValidator = (req, res, next) => {
     stock < 0 ||
     price <= 0
   ) {
-    return res.status(404).json({ msg: "Invalid body: invalid data types" });
+    return res.sendUserError(404, {
+      message: "Invalid body: invalid data types",
+    });
   }
 
   if (
@@ -43,10 +45,8 @@ export const productValidator = (req, res, next) => {
     code.trim() === "" ||
     category.trim() === ""
   ) {
-    return res
-      .status(404)
-      .json({ msg: "Invalid body: fields cannot be empty" });
-  } 
-  
-  else next();
+    return res.sendUserError(404, {
+      message: "Invalid body: fields cannot be empty",
+    });
+  } else next();
 };

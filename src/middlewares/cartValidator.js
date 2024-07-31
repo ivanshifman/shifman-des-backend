@@ -5,6 +5,5 @@ export const authorizeCart = (req, res, next) => {
   if (userCartId === cartId) {
     return next();
   }
-
-  res.status(403).json({ message: "You do not have access to this cart" });
+  res.sendUserError(403, { message: "You do not have access to this cart" });
 };

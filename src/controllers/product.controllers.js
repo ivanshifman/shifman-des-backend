@@ -18,14 +18,13 @@ export const getProducts = async (req, res) => {
     const prev = products.hasPrevPage ? createLink(products.prevPage) : null;
 
     if (!products.docs.length && products.totalDocs === 0) {
-      return res.status(404).send({ msg: "Products not found" });
+      return res.sendUserError(404, { msg: "Products not found" });
     }
 
     if (page > products.totalPages) {
-      return res.status(404).send({ msg: "Page not found" });
+      return res.sendUserError(404, { msg: "Page not found" });
     }
-
-    res.status(200).json({
+    res.sendSuccess(200, {
       status: "success",
       payload: products.docs,
       info: {
@@ -40,7 +39,7 @@ export const getProducts = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).send({ msg: error.message });
+    res.sendServerError(500, error);
   }
 };
 
@@ -49,11 +48,11 @@ export const getProductsById = async (req, res) => {
     const { id } = req.params;
     const productById = await service.getProductsById(id);
     if (!productById) {
-      return res.status(404).send({ msg: "Product not found" });
+      return res.sendUserError(404, { msg: "Product not found" });
     }
-    res.status(200).json(productById);
+    res.sendSuccess(200, productById);
   } catch (error) {
-    res.status(500).send({ msg: error.message });
+    res.sendServerError(500, error);
   }
 };
 
@@ -61,11 +60,11 @@ export const addProducts = async (req, res) => {
   try {
     const newProduct = await service.addProducts(req.body);
     if (!newProduct) {
-      return res.status(404).send({ msg: "Product could not be added" });
+      return res.sendUserError(404, { msg: "Product could not be added" });
     }
-    res.status(200).json(newProduct);
+    res.sendSuccess(200, newProduct);
   } catch (error) {
-    res.status(500).send({ msg: error.message });
+    res.sendServerError(500, error);
   }
 };
 
@@ -75,11 +74,11 @@ export const updateProducts = async (req, res) => {
     const { id } = req.params;
     const prodUpdate = await service.updateProducts(id, updateProduct);
     if (!updateProduct) {
-      return res.status(404).send({ msg: "Product not found" });
+      return res.sendUserError(404, { msg: "Product not found" });
     }
-    res.status(200).json(prodUpdate);
+    res.sendSuccess(200, prodUpdate);
   } catch (error) {
-    res.status(500).send({ msg: error.message });
+    res.sendServerError(500, error);
   }
 };
 
@@ -88,10 +87,10 @@ export const deleteProducts = async (req, res) => {
     const { id } = req.params;
     const deleteProduct = await service.deleteProducts(id);
     if (!deleteProduct) {
-      return res.status(404).send({ msg: "Product not found" });
+      return res.sendUserError(404, { msg: "Product not found" });
     }
-    res.status(200).json(deleteProduct);
+    res.sendSuccess(200, deleteProduct);
   } catch (error) {
-    res.status(500).send({ msg: error.message });
+    res.sendServerError(500, error);
   }
 };

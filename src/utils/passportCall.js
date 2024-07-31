@@ -11,7 +11,7 @@ export const passportCall = (strategy) => {
         }
         if (!user) {
           const errorMessage = info?.message || info?.toString() || "Unauthorized";
-          return res.status(401).send({ message: errorMessage });
+          return res.sendUserError(401, { message: errorMessage });
         }
         req.user = user;
         next();

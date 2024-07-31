@@ -10,7 +10,9 @@ export const updateProductValidator = (req, res, next) => {
   const body = req.body;
 
   if (Object.keys(body).length === 0) {
-    return res.status(404).json({ msg: "Invalid body: no fields to update" });
+    return res.sendUserError(404, {
+      message: "Invalid body: no fields to update",
+    });
   }
 
   const { title, description, code, price, stock, category } = body;
@@ -24,15 +26,17 @@ export const updateProductValidator = (req, res, next) => {
     price <= 0 ||
     stock < 0
   ) {
-    return res.status(404).json({ msg: "Invalid body: invalid data types" });
+    return res.sendUserError(404, {
+      message: "Invalid body: invalid data types",
+    });
   }
 
   const invalidKeys = Object.keys(body).filter(
     (key) => !allowedKeys.includes(key)
   );
   if (invalidKeys.length > 0) {
-    return res.status(404).json({
-      msg: "Invalid body: invalid keys found",
+    return res.sendUserError(404, {
+      message: "Invalid body: invalid keys found",
     });
   }
 
@@ -40,10 +44,8 @@ export const updateProductValidator = (req, res, next) => {
     (key) => typeof body[key] === "string" && !body[key].trim()
   );
   if (emptyKeys.length > 0) {
-    return res.status(404).json({
-      msg: "Invalid body: fields cannot be empty",
+    return res.sendUserError(404, {
+      message: "Invalid body: fields cannot be empty",
     });
-  } 
-  
-  else next();
+  } else next();
 };

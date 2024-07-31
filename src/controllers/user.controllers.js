@@ -2,9 +2,9 @@ import { generateToken } from "../utils/jwtFunctions.js";
 
 export const registerResponse = (req, res) => {
   try {
-    res.status(201).send({ message: "User register" });
+    res.sendSuccess(201, { message: "User register" })
   } catch (error) {
-    res.status(500).send({ msg: error.message });
+    res.sendServerError(500, error)
   }
 };
 
@@ -16,15 +16,15 @@ export const loginResponse = async (req, res) => {
       role: req.user.role,
     });
     res.cookie("access_token", token, { httpOnly: true, maxAge: 300000 });
-    res.send({ message: "Session started", token: token });
+    res.sendSuccess(200, { message: "Session started", token: token })
   } catch (error) {
-    res.status(500).send({ msg: error.message });
+    res.sendServerError(500, error)
   }
 };
 
 export const logOut = (req, res) => {
   res.clearCookie("access_token");
-  res.status(200).json({ message: "Session closed" });
+  res.sendSuccess(200, { message: "Session closed" })
 };
 
 export const current = async (req, res) => {
@@ -32,7 +32,7 @@ export const current = async (req, res) => {
     const user = req.user;
     const { _id, first_name, last_name, email, role, age, cart_id } = user;
 
-    res.json({
+    res.sendSuccess(200, {
       message: "Welcome",
       user: {
         _id,
@@ -43,8 +43,8 @@ export const current = async (req, res) => {
         age,
         cart_id,
       },
-    });
+    })
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.sendServerError(500, error)
   }
 };

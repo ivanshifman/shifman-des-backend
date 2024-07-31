@@ -2,7 +2,7 @@ export const updateCartsValidator = (req, res, next) => {
   const { products } = req.body;
 
   if (!products || !Array.isArray(products)) {
-    return res.status(404).json({ msg: "Invalid properties" });
+    return res.sendUserError(404, { message: "Invalid properties" });
   }
 
   const isValid = products.every((product) => {
@@ -19,7 +19,7 @@ export const updateCartsValidator = (req, res, next) => {
   });
 
   if (!isValid) {
-    return res.status(404).json({ msg: "Invalid properties" });
+    return res.sendUserError(404, { message: "Invalid properties" });
   } else {
     next();
   }
