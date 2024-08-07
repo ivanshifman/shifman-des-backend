@@ -1,9 +1,10 @@
 import { Router } from "express";
 import * as controller from "../controllers/cart.controllers.js";
-import { updateCartsValidator } from "../middlewares/updateCartsValidator.js";
 import { authorizeCart } from "../middlewares/cartValidator.js";
 import { passportCall } from "../utils/passportCall.js";
 import { isAdmin } from "../middlewares/auth.js";
+import { validator } from "../middlewares/validatorFieldsJoi.js";
+import { updateCartsSchema } from "../dtos/schemasJoi/updateCart.dto.js";
 
 const cartRouter = Router();
 
@@ -29,7 +30,7 @@ cartRouter.put(
   "/:cartId",
   passportCall("current"),
   authorizeCart,
-  updateCartsValidator,
+  validator(updateCartsSchema),
   controller.updateCarts
 );
 

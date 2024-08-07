@@ -1,25 +1,26 @@
 import { Router } from "express";
 import * as controller from "../controllers/user.controllers.js";
 import { passportCall } from "../utils/passportCall.js";
-import {
-  validateLogin,
-  validateRegister,
-} from "../middlewares/userFieldsValidator.js";
 import { authenticated } from "../middlewares/auth.js";
+import { validator } from "../middlewares/validatorFieldsJoi.js";
+import {
+  loginSchema,
+  registerSchema,
+} from "../dtos/schemasJoi/userFields.dto.js";
 
 const userRouter = Router();
 
 userRouter.post(
   "/register",
   authenticated,
-  validateRegister,
+  validator(registerSchema),
   passportCall("register"),
   controller.registerResponse
 );
 
 userRouter.post(
   "/login",
-  validateLogin,
+  validator(loginSchema),
   passportCall("login"),
   controller.loginResponse
 );

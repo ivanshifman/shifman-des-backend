@@ -1,9 +1,10 @@
 import { Router } from "express";
 import * as controller from "../controllers/product.controllers.js";
-import { productValidator } from "../middlewares/productValidator.js";
-import { updateProductValidator } from "../middlewares/updateProductValidator.js";
 import { isAdmin } from "../middlewares/auth.js";
 import { passportCall } from "../utils/passportCall.js";
+import { validator } from "../middlewares/validatorFieldsJoi.js";
+import { productSchema } from "../dtos/schemasJoi/product.dto.js";
+import { updateProductSchema } from "../dtos/schemasJoi/updateProduct.dto.js";
 
 const productsRouter = Router();
 
@@ -13,7 +14,7 @@ productsRouter.get("/:id", controller.getProductsById);
 
 productsRouter.post(
   "/",
-  productValidator,
+  validator(productSchema),
   passportCall("current"),
   isAdmin,
   controller.addProducts
@@ -21,7 +22,7 @@ productsRouter.post(
 
 productsRouter.put(
   "/:id",
-  updateProductValidator,
+  validator(updateProductSchema),
   passportCall("current"),
   isAdmin,
   controller.updateProducts
