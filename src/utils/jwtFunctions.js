@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import 'dotenv/config';
+import { config } from "../config/config.js";
 
 export const generateToken = (user) => {
   const payload = {
@@ -8,7 +8,7 @@ export const generateToken = (user) => {
     role: user.role,
   };
 
-  return jwt.sign(payload, process.env.SECRET_KEY_JWT, {
+  return jwt.sign(payload, config.SECRET_KEY_JWT, {
     expiresIn: "5m",
   });
 };

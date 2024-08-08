@@ -1,4 +1,5 @@
 import express from "express";
+import { config } from "./config/config.js";
 import handlebars from "express-handlebars";
 import { __dirname } from "./utils.js";
 import { initMongoDB } from "./daos/mongoDB/connection.js";
@@ -12,10 +13,9 @@ import MainRouter from "./routes/index.router.js";
 await initMongoDB();
 
 const app = express();
-const PORT = 8080;
 
-const httpServer = app.listen(PORT, () =>
-  console.log(`Server in port ${PORT}`)
+const httpServer = app.listen(config.PORT, () =>
+  console.log(`Server in port ${config.PORT}`)
 );
 
 await initializeSocket(httpServer);

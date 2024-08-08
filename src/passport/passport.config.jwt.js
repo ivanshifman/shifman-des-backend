@@ -1,7 +1,7 @@
 import * as services from "../services/user.services.js";
 import passport from "passport";
 import jwt from "passport-jwt";
-import "dotenv/config";
+import { config } from "../config/config.js";
 const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
 
@@ -16,7 +16,7 @@ function cookieExtractor(req) {
 
 const jwtOptions = {
   jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
-  secretOrKey: process.env.SECRET_KEY_JWT,
+  secretOrKey: config.SECRET_KEY_JWT,
 };
 
 export const initializePassportJwt = () => {

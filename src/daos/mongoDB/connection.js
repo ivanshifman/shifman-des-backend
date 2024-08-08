@@ -1,7 +1,7 @@
 import { connect } from "mongoose";
-import "dotenv/config";
+import { config } from "../../config/config.js";
 
-const MONGO_URL = process.env.MONGO_URL;
+const MONGO_URL = config.MONGO_URL;
 
 export const initMongoDB = async () => {
   try {

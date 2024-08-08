@@ -1,7 +1,9 @@
 import UserDao from "../daos/mongoDB/user.dao.js";
+import CartDao from "../daos/mongoDB/cart.dao.js";
 import { comparePassword } from "../utils/hashFunctions.js";
 
 const userDao = new UserDao();
+const cartDao = new CartDao();
 
 export const getUserById = async (id) => {
   try {
@@ -28,6 +30,8 @@ export const register = async (user) => {
     const { email } = user;
     const existUser = await getUserByEmail(email);
     if (!existUser) {
+      const newCart = await cartDao.addCarts();
+      user.cart_id = newCart._id;
       const newUser = await userDao.register(user);
       return newUser;
     } else return null;
