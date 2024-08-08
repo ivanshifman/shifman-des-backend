@@ -62,4 +62,11 @@ cartRouter.put(
   controller.clearCart
 );
 
+cartRouter.post(
+  "/:cartId/purchase",
+  passportCall("current"),
+  authorizeCart,
+  controller.finalizePurchase
+)
+
 export default cartRouter;

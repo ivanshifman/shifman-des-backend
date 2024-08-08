@@ -27,14 +27,26 @@ export const getUserByEmail = async (email) => {
 
 export const register = async (user) => {
   try {
-    const { email } = user;
+    const { email, role } = user;
     const existUser = await getUserByEmail(email);
+
     if (!existUser) {
-      const newCart = await cartDao.addCarts();
-      user.cart_id = newCart._id;
+      if (role) {
+        user.role = role.toLowerCase();
+      } else {
+        user.role = "user";
+      }
+
+      if (user.role === "user") {
+        const newCart = await cartDao.addCarts();
+        user.cart_id = newCart._id;
+      }
+
       const newUser = await userDao.register(user);
       return newUser;
-    } else return null;
+    } else {
+      return null;
+    }
   } catch (error) {
     throw new Error(error.message);
   }

@@ -1,5 +1,6 @@
 import CartDao from "../daos/mongoDB/cart.dao.js";
 import ProductDao from "../daos/mongoDB/product.dao.js";
+import { nanoid } from "nanoid";
 
 const cartDao = new CartDao();
 const productDao = new ProductDao();
@@ -75,7 +76,6 @@ export const addProductInCart = async (cartId, prodId) => {
   }
 };
 
-
 export const deleteProdInCart = async (cartId, prodId) => {
   try {
     const existCart = await cartDao.getCartsById(cartId);
@@ -113,6 +113,49 @@ export const clearCart = async (cartId) => {
     if (!existCart) return null;
     await cartDao.clearCart(cartId);
     return "Empty cart";
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const finalizePurchase = async (user) => {
+  try {
+    const cart = await cartDao.getCartsById(user.cart_id);
+    if (!cart) return null;
+
+    if (cart.products.length === 0) {
+      throw new Error("Cannot finalize purchase: Cart is empty.");
+    }
+
+    let amountAcc = 0;
+    const outOfStockErrors = [];
+
+    for (const prodInCart of cart.products) {
+      const idProd = prodInCart.product;
+      const prodDB = await productDao.getProductsById(idProd);
+
+      if (prodInCart.quantity > prodDB.stock) {
+        outOfStockErrors.push(`Not enough stock for product: ${prodDB.title}`);
+      } else {
+        const amount = prodInCart.quantity * prodDB.price;
+        amountAcc += amount;
+      }
+    }
+
+    if (outOfStockErrors.length > 0) {
+      throw new Error(outOfStockErrors.join('; '));
+    }
+
+    const ticket = await cartDao.finalizePurchase({
+      code: nanoid(),
+      purchase_datetime: new Date().toString(),
+      amount: amountAcc,
+      purchaser: user._id,
+    });
+
+    await cartDao.clearCart(user.cart_id);
+
+    return ticket;
   } catch (error) {
     throw new Error(error.message);
   }

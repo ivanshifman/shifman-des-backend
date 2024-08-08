@@ -1,4 +1,5 @@
 import { CartModel } from "./models/cart.model.js";
+import { TicketModel } from "./models/ticket.model.js";
 
 class CartDao {
   async addCarts() {
@@ -116,6 +117,14 @@ class CartDao {
       if (!updatedCart) throw new Error("Cart not found");
       return "Empty cart";
     } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  async finalizePurchase(ticket) {
+    try {
+      return await TicketModel.create(ticket)
+    } catch(error) {
       throw new Error(error.message);
     }
   }
