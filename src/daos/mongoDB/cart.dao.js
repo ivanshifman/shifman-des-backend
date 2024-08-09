@@ -87,8 +87,7 @@ class CartDao {
 
   async updateCarts(id, prod) {
     try {
-      await CartModel.findByIdAndUpdate(id, prod, { new: true });
-      return "Updated cart";
+      return await CartModel.findByIdAndUpdate(id, prod, { new: true });
     } catch (error) {
       throw new Error(error.message);
     }

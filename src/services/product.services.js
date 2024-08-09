@@ -24,7 +24,7 @@ export const addProducts = async (product) => {
   try {
     const newProduct = await productDao.addProducts(product);
     if (!newProduct) return null;
-    else return "Product added";
+    else return newProduct;
   } catch (error) {
     throw new Error(error.message);
   }

@@ -53,8 +53,7 @@ class ProductDao {
 
   async updateProducts(id, product) {
     try {
-      await ProductModel.findByIdAndUpdate(id, product, { new: true });
-      return "Updated product";
+      return await ProductModel.findByIdAndUpdate(id, product, { new: true });
     } catch (error) {
       throw new Error(error.message);
     }

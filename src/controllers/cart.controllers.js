@@ -40,6 +40,13 @@ export const getCartsById = async (req, res) => {
 export const updateCarts = async (req, res) => {
   try {
     const { cartId } = req.params;
+
+    const cart = await service.getCartsById(cartId);
+
+    if (!cart) {
+      return res.sendUserError(404, { msg: "Cart not found" });
+    }
+
     const updateCart = await service.updateCarts(cartId, req.body);
     if (!updateCart) {
       return res.sendUserError(404, { msg: "Cart not update" });
@@ -80,6 +87,9 @@ export const addProductInCart = async (req, res) => {
     }
     res.sendSuccess(200, addProductInCart);
   } catch (error) {
+    if (error.message.includes("Not enough stock")) {
+      return res.sendUserError(400, { msg: error.message });
+    }
     res.sendServerError(500, error);
   }
 };
@@ -120,6 +130,9 @@ export const updateQuantityProdInCart = async (req, res) => {
 
     res.sendSuccess(200, updateProdQuantity);
   } catch (error) {
+    if (error.message.includes("Not enough stock")) {
+      return res.sendUserError(400, { msg: error.message });
+    }
     res.sendServerError(500, error);
   }
 };
@@ -160,6 +173,11 @@ export const finalizePurchase = async (req, res) => {
     }
     res.sendSuccess(200, ticket);
   } catch (error) {
+    if (error.message.includes("Cart is empty")) {
+      return res.sendUserError(400, { msg: error.message })
+    } else if (error.message.includes("Not enough stock")) {
+      return res.sendUserError(400,{ msg: error.message });
+    }
     res.sendServerError(500, error);
   }
 };

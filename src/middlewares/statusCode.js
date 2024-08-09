@@ -4,7 +4,7 @@ export const getCustomResponses = (req, res, next) => {
   res.sendServerError = (status, error) =>
     res.status(status).json({ success: false, details: error.message });
   res.sendUserError = (status, msg) =>
-    res.status(status).json({ success: false, msg });
+    res.status(status).json({ success: false, details: msg });
 
   next();
 };

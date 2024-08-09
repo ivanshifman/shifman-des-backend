@@ -33,15 +33,16 @@ export const getCartsById = async (id) => {
 //   }
 // };
 
-export const updateCarts = async (id, prod) => {
+export const updateCarts = async (cartId, prod) => {
   try {
-    const updateCart = await cartDao.updateCarts(id, prod);
+    const updateCart = await cartDao.updateCarts(cartId, prod);
     if (!updateCart) return null;
-    else return "Updated cart";
+    else return updateCart;
   } catch (error) {
     throw new Error(error.message);
   }
 };
+
 
 export const deleteCarts = async (id) => {
   try {
@@ -65,6 +66,13 @@ export const addProductInCart = async (cartId, prodId) => {
         (p) => p.product.toString() === prodId
       );
       const quantity = existingProduct.quantity + 1;
+
+      if (quantity > existProd.stock) {
+        throw new Error(
+          `Not enough stock for product: ${existProd.title}. Requested: ${quantity}, Available: ${existProd.stock}`
+        );
+      }
+
       await cartDao.addProductInCart(cartId, prodId, quantity);
     } else {
       await cartDao.addProductInCart(cartId, prodId);
@@ -99,6 +107,13 @@ export const updateQuantityProdInCart = async (cartId, prodId, quantity) => {
       (p) => p.product._id.toString() === prodId
     );
     if (!existCart || !existProd) return null;
+
+    const prodDB = await productDao.getProductsById(prodId);
+    if (quantity > prodDB.stock) {
+      throw new Error(
+        `Not enough stock for product: ${prodDB.title}. Requested: ${quantity}, Available: ${prodDB.stock}`
+      );
+    }
 
     await cartDao.updateQuantityProdInCart(cartId, prodId, quantity);
     return "Updated quantity product in cart";
@@ -135,7 +150,9 @@ export const finalizePurchase = async (user) => {
       const prodDB = await productDao.getProductsById(idProd);
 
       if (prodInCart.quantity > prodDB.stock) {
-        outOfStockErrors.push(`Not enough stock for product: ${prodDB.title}`);
+        outOfStockErrors.push(
+          `Not enough stock for product: ${prodDB.title}. Requested: ${prodInCart.quantity}, Available: ${prodDB.stock}`
+        );
       } else {
         const amount = prodInCart.quantity * prodDB.price;
         amountAcc += amount;
@@ -143,7 +160,7 @@ export const finalizePurchase = async (user) => {
     }
 
     if (outOfStockErrors.length > 0) {
-      throw new Error(outOfStockErrors.join('; '));
+      throw new Error(outOfStockErrors.join("; "));
     }
 
     const ticket = await cartDao.finalizePurchase({
@@ -152,6 +169,13 @@ export const finalizePurchase = async (user) => {
       amount: amountAcc,
       purchaser: user._id,
     });
+
+    for (const prodInCart of cart.products) {
+      const idProd = prodInCart.product;
+      const prodDB = await productDao.getProductsById(idProd);
+      const newStock = prodDB.stock - prodInCart.quantity;
+      await productDao.updateProducts(idProd, { stock: newStock });
+    }
 
     await cartDao.clearCart(user.cart_id);
 
