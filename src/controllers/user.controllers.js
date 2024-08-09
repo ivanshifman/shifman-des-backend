@@ -16,7 +16,7 @@ export const loginResponse = async (req, res) => {
       role: req.user.role,
     });
     res.cookie("access_token", token, { httpOnly: true, maxAge: 300000 });
-    res.sendSuccess(200, { message: "Session started", token: token })
+    res.sendSuccess(200, { message: "Session started", token })
   } catch (error) {
     res.sendServerError(500, error)
   }

@@ -35,6 +35,24 @@ export const getCartsById = async (id) => {
 
 export const updateCarts = async (cartId, prod) => {
   try {
+    const outOfStockErrors = [];
+
+    for (let updatedProduct of prod.products) {
+      const { product, quantity } = updatedProduct;
+
+      const productDB = await productDao.getProductsById(product);
+
+      if (quantity > productDB.stock) {
+        outOfStockErrors.push(
+          `Not enough stock for product: ${productDB.title}. Requested: ${quantity}, Available: ${productDB.stock}`
+        );
+      }
+    }
+
+    if (outOfStockErrors.length > 0) {
+      throw new Error(outOfStockErrors.join("; "));
+    }
+
     const updateCart = await cartDao.updateCarts(cartId, prod);
     if (!updateCart) return null;
     else return updateCart;
@@ -42,7 +60,6 @@ export const updateCarts = async (cartId, prod) => {
     throw new Error(error.message);
   }
 };
-
 
 export const deleteCarts = async (id) => {
   try {

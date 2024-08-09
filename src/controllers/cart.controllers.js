@@ -53,6 +53,9 @@ export const updateCarts = async (req, res) => {
     }
     res.sendSuccess(200, updateCart);
   } catch (error) {
+    if (error.message.includes("Not enough stock")) {
+      return res.sendUserError(400, { msg: error.message });
+    }
     res.sendServerError(500, error);
   }
 };
