@@ -1,6 +1,7 @@
 import UserDao from "../daos/mongoDB/user.dao.js";
 import CartDao from "../daos/mongoDB/cart.dao.js";
 import { comparePassword } from "../utils/hashFunctions.js";
+import { smsService } from "./sms.services.js";
 
 const userDao = new UserDao();
 const cartDao = new CartDao();
@@ -42,7 +43,9 @@ export const register = async (user) => {
         user.cart_id = newCart._id;
       }
 
+      await smsService.validateAndRegisterUser(user);
       const newUser = await userDao.register(user);
+      await smsService.sendSms(user.phone, "Thanks for registering", user.countryCode);
       return newUser;
     } else {
       return null;

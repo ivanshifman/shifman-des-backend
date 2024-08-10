@@ -1,4 +1,14 @@
 import Joi from "joi";
+import { isValidNumber } from 'libphonenumber-js';
+
+
+const validatePhone = (phoneNumber, helpers) => {
+  if (!isValidNumber(phoneNumber)) { 
+    return helpers.error('any.invalid');
+  }
+  return phoneNumber;
+};
+
 
 const gmailRegex = /^[^\s@]+@gmail\.com$/;
 
@@ -36,6 +46,20 @@ export const registerSchema = Joi.object({
   role: Joi.string().valid("admin", "user").optional().messages({
     "string.base": '"role" should be a type of text',
     "string.valid": '"role" must be either "admin" or "user"',
+  }),
+  phone: Joi.string()
+    .custom(validatePhone, 'phone validation')
+    .required()
+    .messages({
+      "string.base": '"phone" should be a type of text',
+      "any.invalid": '"phone" must be a valid phone number',
+      "any.required": '"phone" is a required field',
+    }),
+  countryCode: Joi.string().length(2).uppercase().required().messages({
+    "string.base": '"countryCode" should be a type of text',
+    "string.length": '"countryCode" must be exactly 2 characters long',
+    "string.uppercase": '"countryCode" must be in uppercase',
+    "any.required": '"countryCode" is a required field',
   }),
 });
 

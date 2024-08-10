@@ -7,6 +7,8 @@ const userSchema = new Schema({
   role: { type: String, enum: ["admin", "user"], default: "user" },
   password: { type: String, required: true },
   age: { type: Number, required: true, min: 0 },
+  phone: { type: String, required: true },
+  countryCode: { type: String, required: true, minlength: 2, maxlength: 2 },
   cart_id: { type: Schema.Types.ObjectId, ref: "carts"},
 },
 { versionKey: false });
