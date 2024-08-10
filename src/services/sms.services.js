@@ -1,11 +1,14 @@
 import twilio from "twilio";
 import { config } from "../config/config.js";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
-import { getCodes } from 'country-list';
+import { getCodes } from "country-list";
 
 class SmsService {
   constructor() {
-    this.client = twilio(config.SMS.TWILIO_ACCOUNT_SID, config.SMS.TWILIO_AUTH_TOKEN);
+    this.client = twilio(
+      config.SMS.TWILIO_ACCOUNT_SID,
+      config.SMS.TWILIO_AUTH_TOKEN
+    );
     this.validCountryCodes = new Set(getCodes());
   }
 
