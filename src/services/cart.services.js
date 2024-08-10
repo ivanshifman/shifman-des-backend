@@ -1,6 +1,7 @@
 import CartDao from "../daos/mongoDB/cart.dao.js";
 import ProductDao from "../daos/mongoDB/product.dao.js";
 import { nanoid } from "nanoid";
+import { mailService } from "./mail.services.js";
 
 const cartDao = new CartDao();
 const productDao = new ProductDao();
@@ -193,7 +194,11 @@ export const finalizePurchase = async (user) => {
       const newStock = prodDB.stock - prodInCart.quantity;
       await productDao.updateProducts(idProd, { stock: newStock });
     }
-
+    await mailService.sendMail({
+      to: user.email,
+      subject: "Thank you for your purchase",
+      type: "purchase",
+    });
     await cartDao.clearCart(user.cart_id);
 
     return ticket;

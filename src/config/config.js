@@ -17,6 +17,12 @@ export const config = {
   MONGO_URL: process.env.MONGO_URL,
   PORT: process.env.PORT,
   SECRET_KEY_JWT: process.env.SECRET_KEY_JWT,
+  MAILER: {
+    HOST: process.env.MAILER_HOST,
+    PORT: process.env.MAILER_PORT,
+    USERNAME: process.env.MAILER_USERNAME,
+    PASSWORD: process.env.MAILER_PASSWORD,
+  },
   SMS: {
     TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
     TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,

@@ -2,6 +2,7 @@ import UserDao from "../daos/mongoDB/user.dao.js";
 import CartDao from "../daos/mongoDB/cart.dao.js";
 import { comparePassword } from "../utils/hashFunctions.js";
 import { smsService } from "./sms.services.js";
+import { mailService } from "./mail.services.js";
 
 const userDao = new UserDao();
 const cartDao = new CartDao();
@@ -28,7 +29,7 @@ export const getUserByEmail = async (email) => {
 
 export const register = async (user) => {
   try {
-    const { email, role } = user;
+    const { email, role, phone, countryCode } = user;
     const existUser = await getUserByEmail(email);
 
     if (!existUser) {
@@ -45,7 +46,16 @@ export const register = async (user) => {
 
       await smsService.validateAndRegisterUser(user);
       const newUser = await userDao.register(user);
-      await smsService.sendSms(user.phone, "Thanks for registering", user.countryCode);
+
+      await smsService.sendSms(phone, "Thanks for registering", countryCode);
+      if (user.role === "user") {
+        await mailService.sendMail({
+          to: email,
+          subject: "Welcome to Shifman Ecommerce",
+          type: "register",
+        });
+      }
+
       return newUser;
     } else {
       return null;
