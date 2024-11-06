@@ -9,6 +9,7 @@ import cookieParser from "cookie-parser";
 import { initializePassport } from "./passport/passport.config.local.js";
 import { initializePassportJwt } from "./passport/passport.config.jwt.js";
 import MainRouter from "./routes/index.router.js";
+import routerMock from "./1-preEntregaBack3/mocks.router.js";
 
 await initMongoDB();
 
@@ -34,3 +35,4 @@ app.set("views", `${__dirname}/views`);
 
 const mainRouter = new MainRouter();
 app.use("/", mainRouter.getRouter());
+app.use("/api/mocks", routerMock)
