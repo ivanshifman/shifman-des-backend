@@ -2,6 +2,7 @@ import twilio from "twilio";
 import { config } from "../config/config.js";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { getCodes } from "country-list";
+import { logger } from "../utils/loggers/logger.js";
 
 class SmsService {
   constructor() {
@@ -32,7 +33,7 @@ class SmsService {
       body: message,
     });
 
-    console.log(info);
+    logger.info(info.accountSid)
   }
 
   async validateAndRegisterUser(user) {

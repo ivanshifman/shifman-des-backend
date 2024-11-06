@@ -30,7 +30,9 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "socket.io": "^4.7.5",
-    "twilio": "^5.2.2"
+    "twilio": "^5.2.2",
+    "winston": "^3.16.0",
+    "winston-mongodb": "^6.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"

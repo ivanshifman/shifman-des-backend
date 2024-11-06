@@ -1,5 +1,6 @@
 import { Server } from "socket.io";
 import ProductManager from "./daos/filesystem/ProductManager.js";
+import { logger } from "./utils/loggers/logger.js";
 
 const productManager = new ProductManager();
 
@@ -7,10 +8,10 @@ const initializeSocket = async (httpServer) => {
   const socketServer = new Server(httpServer);
 
   socketServer.on("connection", (socket) => {
-    console.log(`New connection ${socket.id}`);
+    logger.info(`New connection ${socket.id}`);
 
     socket.on("disconnect", () => {
-      console.log(`Disconnect ${socket.id}`);
+      logger.info(`Disconnect ${socket.id}`);
     });
 
     socket.on("requestProducts", async () => {

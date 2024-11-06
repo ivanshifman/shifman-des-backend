@@ -1,5 +1,6 @@
 import { promises as fs } from "fs";
 import { nanoid } from "nanoid";
+import { logger } from "../../utils/loggers/logger.js";
 
 class ProductManager {
   constructor() {
@@ -11,7 +12,7 @@ class ProductManager {
       let products = await fs.readFile(this.path, "utf-8");
       return products ? JSON.parse(products) : [];
     } catch (error) {
-      console.log(error);
+      logger.error(error)
     }
   }
 
@@ -19,7 +20,7 @@ class ProductManager {
     try {
       await fs.writeFile(this.path, JSON.stringify(product));
     } catch (error) {
-      console.log(error);
+      logger.error(error)
     }
   }
 
@@ -28,7 +29,7 @@ class ProductManager {
       let products = await this.readProducts();
       return products.find((prod) => prod.id == id);
     } catch (error) {
-      console.log(error);
+      logger.error(error)
     }
   }
 
@@ -65,7 +66,7 @@ class ProductManager {
       await this.writeProducts(productsAll);
       return "Product added";
     } catch (error) {
-      console.log(error);
+      logger.error(error)
     }
   }
 
@@ -73,7 +74,7 @@ class ProductManager {
     try {
       return await this.readProducts();
     } catch (error) {
-      console.log(error);
+      logger.error(error)
     }
   }
 
@@ -83,7 +84,7 @@ class ProductManager {
       if (!productById) return "Product not found";
       return productById;
     } catch (error) {
-      console.log(error);
+      logger.error(error)
     }
   }
 
@@ -127,7 +128,7 @@ class ProductManager {
       await this.writeProducts(products);
       return "Updated product";
     } catch (error) {
-      console.log(error);
+      logger.error(error)
     }
   }
 
@@ -143,7 +144,7 @@ class ProductManager {
         return "Product not found";
       }
     } catch (error) {
-      console.log(error);
+      logger.error(error)
     }
   }
 }

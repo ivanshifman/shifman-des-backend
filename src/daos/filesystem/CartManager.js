@@ -1,6 +1,7 @@
 import { promises as fs } from "fs";
 import { nanoid } from "nanoid";
 import ProductManager from "./ProductManager.js";
+import { logger } from "../../utils/loggers/logger.js";
 
 const productAll = new ProductManager();
 
@@ -14,7 +15,7 @@ class CartManager {
       let carts = await fs.readFile(this.path, "utf-8");
       return carts ? JSON.parse(carts) : [];
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   }
 
@@ -22,7 +23,7 @@ class CartManager {
     try {
       await fs.writeFile(this.path, JSON.stringify(cart));
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   }
 
@@ -31,7 +32,7 @@ class CartManager {
       let carts = await this.readCarts();
       return carts.find((cart) => cart.id == id);
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   }
 
@@ -43,7 +44,7 @@ class CartManager {
       await this.writeCarts(cartConcat);
       return "Cart added";
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   }
 
@@ -57,28 +58,27 @@ class CartManager {
       if (!productById) {
         return "Product not found";
       }
-  
+
       let cartsAll = await this.readCarts();
       let cartFilter = cartsAll.filter((cart) => cart.id != cartId);
-  
+
       let existingProductIndex = cartById.products.findIndex(
         (prod) => prod.id === productById.id
       );
-  
+
       if (existingProductIndex !== -1) {
         cartById.products[existingProductIndex].quantity++;
       } else {
         cartById.products.push({ id: productById.id, quantity: 1 });
       }
-  
+
       let cartConcat = [cartById, ...cartFilter];
       await this.writeCarts(cartConcat);
       return "Product added to cart";
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   }
-  
 
   async getCartsById(id) {
     try {
@@ -86,7 +86,7 @@ class CartManager {
       if (!cartById) return "Cart not found";
       return cartById;
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   }
 }

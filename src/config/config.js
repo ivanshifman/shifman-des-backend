@@ -14,6 +14,7 @@ dotenv.config({
 });
 
 export const config = {
+  environment,
   MONGO_URL: process.env.MONGO_URL,
   PORT: process.env.PORT,
   SECRET_KEY_JWT: process.env.SECRET_KEY_JWT,

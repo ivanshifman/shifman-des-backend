@@ -1,5 +1,6 @@
 import express from "express";
 import { config } from "./config/config.js";
+import { loggerMiddleware, logger } from "./utils/loggers/logger.js";
 import handlebars from "express-handlebars";
 import { __dirname } from "./utils.js";
 import { initMongoDB } from "./daos/mongoDB/connection.js";
@@ -16,7 +17,7 @@ await initMongoDB();
 const app = express();
 
 const httpServer = app.listen(config.PORT, () =>
-  console.log(`Server in port ${config.PORT}`)
+  logger.info(`Server in port ${config.PORT}`)
 );
 
 await initializeSocket(httpServer);
@@ -24,6 +25,7 @@ await initializeSocket(httpServer);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(loggerMiddleware);
 initializePassport();
 initializePassportJwt();
 app.use(passport.initialize());
@@ -35,4 +37,4 @@ app.set("views", `${__dirname}/views`);
 
 const mainRouter = new MainRouter();
 app.use("/", mainRouter.getRouter());
-app.use("/api/mocks", routerMock)
+app.use("/api/mocks", routerMock);
