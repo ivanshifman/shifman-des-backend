@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "start": "nodemon src/index.js --env prod"
+    "start": "node src/index.js --env prod"
   },
   "author": "Ivan Shifman",
   "license": "ISC",

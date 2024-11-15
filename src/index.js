@@ -38,3 +38,6 @@ app.set("views", `${__dirname}/views`);
 const mainRouter = new MainRouter();
 app.use("/", mainRouter.getRouter());
 app.use("/api/mocks", routerMock);
+app.use("*", (req, res) => {
+  res.sendUserError(404, { msg: "Page not found" });
+});

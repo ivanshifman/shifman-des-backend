@@ -38,5 +38,8 @@ export const logger = winston.createLogger({
 export const loggerMiddleware = (req, res, next) => {
   req.logger = logger;
   logger.info(`Request: ${req.method} ${req.url}`);
+  res.on("finish", () => {
+    logger.info(`Response: ${req.method} ${req.originalUrl} - Status: ${res.statusCode}`);
+  });
   next();
 };
