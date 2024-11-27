@@ -2,7 +2,6 @@ import app from "../index.js";
 import supertest from "supertest";
 import { expect } from "chai";
 
-
 const request = supertest(app);
 
 describe("Auth Routes", () => {
