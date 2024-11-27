@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "start": "node src/index.js --env prod"
+    "start": "node src/index.js --env prod",
+    "test": "mocha src/test/*.js"
   },
   "author": "Ivan Shifman",
   "license": "ISC",
