@@ -7,6 +7,7 @@ import { initMongoDB } from "./daos/mongoDB/connection.js";
 import initializeSocket from "./socket.js";
 import passport from "passport";
 import cookieParser from "cookie-parser";
+import helmet from "helmet";
 import { initializePassport } from "./passport/passport.config.local.js";
 import { initializePassportJwt } from "./passport/passport.config.jwt.js";
 import MainRouter from "./routes/index.router.js";
@@ -29,6 +30,7 @@ app.use(loggerMiddleware);
 initializePassport();
 initializePassportJwt();
 app.use(passport.initialize());
+app.use(helmet());
 app.use(express.static(`${__dirname}/public`));
 
 app.engine("handlebars", handlebars.engine());
@@ -41,3 +43,5 @@ app.use("/api/mocks", routerMock);
 app.use("*", (req, res) => {
   res.sendUserError(404, { msg: "Page not found" });
 });
+
+export default app;
