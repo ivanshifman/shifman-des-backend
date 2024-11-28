@@ -60,7 +60,7 @@ export const addProducts = async (req, res) => {
   try {
     const newProduct = await service.addProducts(req.body);
     if (!newProduct) {
-      return res.sendUserError(404, { msg: "Product could not be added" });
+      return res.sendUserError(400, { msg: "Product could not be added" });
     }
     res.sendSuccess(200, newProduct);
   } catch (error) {
@@ -74,7 +74,7 @@ export const updateProducts = async (req, res) => {
     const { id } = req.params;
     const prodUpdate = await service.updateProducts(id, updateProduct);
     if (!updateProduct) {
-      return res.sendUserError(404, { msg: "Product not found" });
+      return res.sendUserError(400, { msg: "Product not found" });
     }
     res.sendSuccess(200, prodUpdate);
   } catch (error) {
@@ -86,6 +86,7 @@ export const deleteProducts = async (req, res) => {
   try {
     const { id } = req.params;
     const deleteProduct = await service.deleteProducts(id);
+    
     if (!deleteProduct) {
       return res.sendUserError(404, { msg: "Product not found" });
     }

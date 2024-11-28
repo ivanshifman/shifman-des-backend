@@ -44,8 +44,8 @@ class ProductDao {
 
   async addProducts(product) {
     try {
-      await ProductModel.create(product);
-      return "Product added";
+      const newProduct = await ProductModel.create(product);
+      return newProduct;
     } catch (error) {
       throw new Error(error.message);
     }
@@ -61,7 +61,10 @@ class ProductDao {
 
   async deleteProducts(id) {
     try {
-      await ProductModel.findByIdAndDelete(id);
+      const deleteProd = await ProductModel.findByIdAndDelete(id);
+      if (!deleteProd) {
+        return null;
+      }
       return "Product deleted";
     } catch (error) {
       throw new Error(error.message);
