@@ -9,35 +9,28 @@ let productId;
 
 describe("Auth Routes", () => {
   describe("POST /api/auth/register", () => {
-    it("should register a new user", async () => {
-      const response = await request.post("/api/auth/register").send({
-        first_name: "Name",
-        last_name: "LastName",
-        email: "name@gmail.com",
-        password: "password123",
-        age: 25,
-        phone: "+541112345678",
-        countryCode: "AR",
-        role: "admin",
-      });
+    let newUser = {
+      first_name: "Name",
+      last_name: "LastName",
+      email: "name@gmail.com",
+      password: "password123",
+      age: 25,
+      phone: "+541112345678",
+      countryCode: "AR",
+      role: "admin",
+    };
 
+    it("should register a new user", async () => {
+      const response = await request.post("/api/auth/register").send(newUser);
       expect(response.statusCode).to.equal(201);
       expect(response._body).to.have.property("success", true);
     });
 
     it("should not register an existing user", async () => {
-      const response = await request.post("/api/auth/register").send({
-        first_name: "Name",
-        last_name: "LastName",
-        email: "name@gmail.com",
-        password: "password123",
-        age: 25,
-        phone: "+541112345678",
-        countryCode: "AR",
-      });
-
-      expect(response.statusCode).to.equal(401);
+      const response = await request.post("/api/auth/register").send(newUser);
+      expect(response.statusCode).to.be.equal(401);
       expect(response._body).to.have.property("success", false);
+      expect(response._body.details.message).to.equal("User already exists");
     });
   });
 
@@ -113,6 +106,7 @@ describe("Product Routes", () => {
     it("should return a list of products", async () => {
       const response = await request.get("/api/products");
       expect(response.statusCode).to.equal(200);
+      expect(response._body.payload.payload).to.be.an("array");
       expect(response._body).to.have.property("success", true);
     });
 

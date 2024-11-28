@@ -1,6 +1,6 @@
 export const authenticated = (req, res, next) => {
   if (req.cookies && req.cookies.access_token) {
-    return res.sendUserError(403, { message: "User already authenticated" });
+    return res.sendUserError(401, { message: "User already authenticated" });
   }
   next();
 };
