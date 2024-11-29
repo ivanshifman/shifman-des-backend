@@ -35,7 +35,7 @@ class ProductDao {
   async getProductsById(id) {
     try {
       const productById = await ProductModel.findById(id);
-      if (!productById) throw new Error("Product not found");
+      if (!productById) return null;
       return productById;
     } catch (error) {
       throw new Error(error.message);

@@ -2,7 +2,7 @@ import { generateToken } from "../utils/jwtFunctions.js";
 
 export const registerResponse = (req, res) => {
   try {
-    res.sendSuccess(201, { message: "User register" });
+    res.sendSuccess(201, { message: req.user });
   } catch (error) {
     res.sendServerError(500, error);
   }

@@ -20,9 +20,9 @@ class CartDao {
 
   async getCartsById(id) {
     try {
-      const cartById = await CartModel.findById(id).populate(
-        "products.product"
-      ).lean();
+      const cartById = await CartModel.findById(id)
+        .populate("products.product")
+        .lean();
       if (!cartById) throw new Error("Cart not found");
       return cartById;
     } catch (error) {
@@ -30,14 +30,15 @@ class CartDao {
     }
   }
 
-  async deleteCarts(id) {
-    try {
-      await CartModel.findByIdAndDelete(id);
-      return "Cart deleted";
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  }
+  // async deleteCarts(id) {
+  //   try {
+  //     const deleteCart = await CartModel.findByIdAndDelete(id);
+  //     if (!deleteCart) throw new Error("Cart not found");
+  //     return deleteCart;
+  //   } catch (error) {
+  //     throw new Error(error.message);
+  //   }
+  // }
 
   async addProductInCart(cartId, prodId, quantity) {
     try {
@@ -54,8 +55,9 @@ class CartDao {
         cart.products.push({ product: prodId, quantity });
       }
 
-      await cart.save();
-      return "Product added to cart";
+      const cartWithProduct = await cart.save();
+      if (!cartWithProduct) return null;
+      return cartWithProduct;
     } catch (error) {
       throw new Error(error.message);
     }
@@ -74,12 +76,12 @@ class CartDao {
 
   async deleteProdInCart(cartId, prodId) {
     try {
-      await CartModel.findByIdAndUpdate(
+      const deleteProdIdInCartId = await CartModel.findByIdAndUpdate(
         cartId,
         { $pull: { products: { product: prodId } } },
         { new: true }
       );
-      return "Product deleted to cart";
+      return deleteProdIdInCartId;
     } catch (error) {
       throw new Error(error.message);
     }
@@ -122,8 +124,8 @@ class CartDao {
 
   async finalizePurchase(ticket) {
     try {
-      return await TicketModel.create(ticket)
-    } catch(error) {
+      return await TicketModel.create(ticket);
+    } catch (error) {
       throw new Error(error.message);
     }
   }

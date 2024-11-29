@@ -41,12 +41,12 @@ cartRouter.put(
   controller.updateQuantityProdInCart
 );
 
-cartRouter.delete(
-  "/:cartId",
-  passportCall("current"),
-  authorizeCart,
-  controller.deleteCarts
-);
+// cartRouter.delete(
+//   "/:cartId",
+//   passportCall("current"),
+//   authorizeCart,
+//   controller.deleteCarts
+// );
 
 cartRouter.delete(
   "/:cartId/products/:prodId",

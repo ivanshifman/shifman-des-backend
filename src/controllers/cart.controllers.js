@@ -60,25 +60,25 @@ export const updateCarts = async (req, res) => {
   }
 };
 
-export const deleteCarts = async (req, res) => {
-  try {
-    const { cartId } = req.params;
-    const cart = await service.getCartsById(cartId);
+// export const deleteCarts = async (req, res) => {
+//   try {
+//     const { cartId } = req.params;
+//     const cart = await service.getCartsById(cartId);
 
-    if (!cart) {
-      return res.sendUserError(404, { msg: "Cart not found" });
-    }
+//     if (!cart) {
+//       return res.sendUserError(404, { msg: "Cart not found" });
+//     }
 
-    const deleteCart = await service.deleteCarts(id);
-    if (!deleteCart) {
-      return res.sendUserError(404, { msg: "Cart could not be deleted" });
-    }
+//     const deleteCart = await service.deleteCarts(cartId);
+//     if (!deleteCart) {
+//       return res.sendUserError(404, { msg: "Cart could not be deleted" });
+//     }
 
-    res.sendSuccess(200, deleteCart);
-  } catch (error) {
-    res.sendServerError(500, error);
-  }
-};
+//     res.sendSuccess(200, deleteCart);
+//   } catch (error) {
+//     res.sendServerError(500, error);
+//   }
+// };
 
 export const addProductInCart = async (req, res) => {
   try {
@@ -93,7 +93,7 @@ export const addProductInCart = async (req, res) => {
     if (error.message.includes("Not enough stock")) {
       return res.sendUserError(400, { msg: error.message });
     }
-    res.sendServerError(500, error);
+    res.sendServerError(400, error);
   }
 };
 
