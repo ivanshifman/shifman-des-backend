@@ -131,6 +131,10 @@ export const updateQuantityProdInCart = async (cartId, prodId, quantity) => {
       );
     }
 
+    if(quantity < 1) {
+      throw new Error("Quantity cannot be negative or zero")
+    }
+
     await cartDao.updateQuantityProdInCart(cartId, prodId, quantity);
     return "Updated quantity product in cart";
   } catch (error) {

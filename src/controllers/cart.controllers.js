@@ -136,6 +136,9 @@ export const updateQuantityProdInCart = async (req, res) => {
     if (error.message.includes("Not enough stock")) {
       return res.sendUserError(400, { msg: error.message });
     }
+    if(error.message.includes("Quantity cannot be negative or zero")) {
+      return res.sendUserError(400, { msg: error.message });
+    }
     res.sendServerError(500, error);
   }
 };

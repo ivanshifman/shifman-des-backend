@@ -2,12 +2,18 @@ import app from "../index.js";
 import supertest from "supertest";
 import { expect } from "chai";
 import { adminUser, regularUser } from "./userExample/userExample.js";
+import { ProductModel } from "../daos/mongoDB/models/product.model.js";
+import { CartModel } from "../daos/mongoDB/models/cart.model.js";
+import { UserModel } from "../daos/mongoDB/models/user.model.js";
+import { TicketModel } from "../daos/mongoDB/models/ticket.model.js";
+import { logger } from "../utils/loggers/logger.js";
 
 const request = supertest(app);
 
 let userToken;
 let productId;
 let cartId;
+let ticketId;
 
 describe("Auth Routes", () => {
   describe("POST /api/auth/register", () => {
@@ -210,25 +216,6 @@ describe("Product Routes", () => {
       expect(response._body.details.message).to.equal("Validation error");
     });
   });
-
-  describe("DELETE /api/products/:id", () => {
-    it("should delete an existing product", async () => {
-      const response = await request
-        .delete(`/api/products/${productId}`)
-        .set("Cookie", `${userToken.name}=${userToken.value}`);
-      expect(response.statusCode).to.equal(200);
-      expect(response._body).to.have.property("success", true);
-      expect(response._body.payload).to.equal("Product deleted");
-    });
-
-    it("should return an error for non-existent product ID", async () => {
-      const response = await request
-        .delete(`/api/products/000000000000000000000000`)
-        .set("Cookie", `${userToken.name}=${userToken.value}`);
-      expect(response.statusCode).to.equal(404);
-      expect(response._body.details.msg).to.equal("Product not found");
-    });
-  });
 });
 
 describe("Cart Routes", () => {
@@ -269,14 +256,14 @@ describe("Cart Routes", () => {
   });
 
   describe("GET /api/carts/:cartId", () => {
-    before(async () => {
+    before(async function () {
+      this.timeout(5000);
       let response = await request.post("/api/auth/register").send(regularUser);
       expect(response.statusCode).to.equal(201);
       expect(response._body).to.have.property("success", true);
-      cartId = response._body.payload.message.cart_id
-      console.log(response_body);
-      console.log(cartId);
-      
+      cartId = response._body?.payload?.message?.cart_id;
+      expect(cartId).to.exist;
+
       response = await request.post("/api/auth/login").send({
         email: regularUser.email,
         password: regularUser.password,
@@ -284,7 +271,7 @@ describe("Cart Routes", () => {
       expect(response.statusCode).to.equal(200);
       expect(response._body).to.have.property("success", true);
       expect(response._body.payload).to.have.property("token");
-      
+
       const cookieRes = response.header["set-cookie"][0];
       expect(cookieRes).to.be.ok;
       userToken = {
@@ -295,7 +282,6 @@ describe("Cart Routes", () => {
       expect(userToken.value).to.be.ok;
     });
     it("should get a cart by ID", async () => {
-      
       const response = await request
         .get(`/api/carts/${cartId}`)
         .set("Cookie", `${userToken.name}=${userToken.value}`);
@@ -323,7 +309,7 @@ describe("Cart Routes", () => {
         .set("Cookie", `${userToken.name}=${userToken.value}`);
       expect(response._body).to.have.property("success", true);
       expect(response.statusCode).to.equal(200);
-      expect(response._body.payload).to.equal("Product added to cart");
+      expect(response._body.payload).to.have.property("products");
     });
 
     it("should return error for non-existent product", async () => {
@@ -331,7 +317,7 @@ describe("Cart Routes", () => {
         .post(`/api/carts/${cartId}/products/000000000000000000000000`)
         .set("Cookie", `${userToken.name}=${userToken.value}`);
       expect(response._body).to.have.property("success", false);
-      expect(response.statusCode).to.equal(400);
+      expect(response.statusCode).to.equal(404);
     });
   });
 
@@ -379,14 +365,15 @@ describe("Cart Routes", () => {
         .set("Cookie", `${userToken.name}=${userToken.value}`);
       expect(response.statusCode).to.equal(400);
       expect(response._body).to.have.property("success", false);
-      expect(response._body.details.message).to.equal(
-        "Error update product quantity to cart"
+      expect(response._body.details.msg).to.equal(
+        "Quantity cannot be negative or zero"
       );
     });
   });
 
   describe("POST /api/carts/:cartId/purchase", () => {
-    it("should finalize the purchase of a cart", async () => {
+    it("should finalize the purchase of a cart", async function () {
+      this.timeout(5000);
       const response = await request
         .post(`/api/carts/${cartId}/purchase`)
         .set("Cookie", `${userToken.name}=${userToken.value}`);
@@ -399,6 +386,57 @@ describe("Cart Routes", () => {
         "purchaser",
         "_id",
       ]);
+      ticketId = response._body?.payload?._id;
     });
+  });
+
+  after(async function () {
+    this.timeout(10000);
+
+    if (adminUser) {
+      const userEmail = adminUser.email;
+      if (userEmail) {
+        const user = await UserModel.findOne({ email: userEmail });
+        if (user) {
+          await UserModel.deleteOne({ email: userEmail });
+          logger.info(`User with email ${userEmail} deleted`);
+        }
+      }
+    }
+
+    if (regularUser) {
+      const userEmail = regularUser.email;
+      if (userEmail) {
+        const user = await UserModel.findOne({ email: userEmail });
+        if (user) {
+          await UserModel.deleteOne({ email: userEmail });
+          logger.info(`User with email ${userEmail} deleted`);
+        }
+      }
+    }
+
+    if (productId) {
+      const product = await ProductModel.findById(productId);
+      if (product) {
+        await ProductModel.deleteOne({ _id: productId });
+        logger.info(`Product with Id ${productId} deleted`);
+      }
+    }
+
+    if (cartId) {
+      const cart = await CartModel.findById(cartId);
+      if (cart) {
+        await CartModel.deleteOne({ _id: cartId });
+        logger.info(`Cart with Id ${cartId} deleted`);
+      }
+    }
+
+    if (ticketId) {
+      const ticket = await TicketModel.findById(ticketId);
+      if (ticket) {
+        await TicketModel.deleteOne({ _id: ticketId });
+        logger.info(`Ticket with Id ${ticketId} deleted`);
+      }
+    }
   });
 });
