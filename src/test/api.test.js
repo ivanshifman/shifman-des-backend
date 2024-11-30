@@ -1,12 +1,23 @@
 import app from "../index.js";
 import supertest from "supertest";
 import { expect } from "chai";
-import { adminUser, regularUser } from "./userExample/userExample.js";
-import { ProductModel } from "../daos/mongoDB/models/product.model.js";
-import { CartModel } from "../daos/mongoDB/models/cart.model.js";
-import { UserModel } from "../daos/mongoDB/models/user.model.js";
-import { TicketModel } from "../daos/mongoDB/models/ticket.model.js";
-import { logger } from "../utils/loggers/logger.js";
+import {
+  adminUser,
+  invalidProduct,
+  invalidUpdate,
+  newProduct,
+  regularUser,
+  updateData,
+  updateDataCart,
+  updateDataQuantityNegative,
+  updateDataQuantityPositive,
+} from "./utilsTest/fieldsTest.js";
+import {
+  deleteCartById,
+  deleteProductById,
+  deleteTicketById,
+  deleteUserByEmail,
+} from "./utilsTest/deleteDataDb.js";
 
 const request = supertest(app);
 
@@ -134,15 +145,6 @@ describe("Product Routes", () => {
 
   describe("POST /api/products", () => {
     it("should create a new product", async () => {
-      const newProduct = {
-        title: "Test Product",
-        description: "A test product",
-        code: "TEST123",
-        price: 100,
-        stock: 50,
-        category: "kitchen",
-      };
-
       const response = await request
         .post("/api/products")
         .send(newProduct)
@@ -154,11 +156,6 @@ describe("Product Routes", () => {
     });
 
     it("should return validation errors for invalid data", async () => {
-      const invalidProduct = {
-        title: "",
-        price: -5,
-      };
-
       const response = await request
         .post("/api/products")
         .send(invalidProduct)
@@ -189,11 +186,6 @@ describe("Product Routes", () => {
 
   describe("PUT /api/products/:id", () => {
     it("should update an existing product", async () => {
-      const updateData = {
-        title: "Updated Product",
-        price: 120,
-      };
-
       const response = await request
         .put(`/api/products/${productId}`)
         .send(updateData)
@@ -204,10 +196,6 @@ describe("Product Routes", () => {
     });
 
     it("should return validation errors for invalid updates", async () => {
-      const invalidUpdate = {
-        price: -10,
-      };
-
       const response = await request
         .put(`/api/products/${productId}`)
         .send(invalidUpdate)
@@ -287,7 +275,6 @@ describe("Cart Routes", () => {
         .set("Cookie", `${userToken.name}=${userToken.value}`);
       expect(response.statusCode).to.equal(200);
       expect(response._body.payload).to.have.property("_id");
-      //
     });
 
     it("should return error for non-existent cart ID", async () => {
@@ -323,18 +310,9 @@ describe("Cart Routes", () => {
 
   describe("PUT /api/carts/:cartId", () => {
     it("should update a cart", async () => {
-      const updateData = {
-        products: [
-          {
-            product: productId,
-            quantity: 2,
-          },
-        ],
-      };
-
       const response = await request
         .put(`/api/carts/${cartId}`)
-        .send(updateData)
+        .send(updateDataCart(productId))
         .set("Cookie", `${userToken.name}=${userToken.value}`);
       expect(response._body).to.have.property("success", true);
       expect(response.statusCode).to.equal(200);
@@ -343,12 +321,10 @@ describe("Cart Routes", () => {
   });
 
   describe("PUT /api/carts/:cartId/products/:prodId", () => {
-    it("should update the quantity of a product in a cart", async () => {
-      const updateData = { quantity: 3 };
-
+    it("should update the quantity of a product in a cart", async () => {  
       const response = await request
         .put(`/api/carts/${cartId}/products/${productId}`)
-        .send(updateData)
+        .send(updateDataQuantityPositive)
         .set("Cookie", `${userToken.name}=${userToken.value}`);
       expect(response.statusCode).to.equal(200);
       expect(response._body.payload).to.equal(
@@ -357,11 +333,9 @@ describe("Cart Routes", () => {
     });
 
     it("should return validation error for invalid quantity", async () => {
-      const updateData = { quantity: -1 };
-
       const response = await request
         .put(`/api/carts/${cartId}/products/${productId}`)
-        .send(updateData)
+        .send(updateDataQuantityNegative)
         .set("Cookie", `${userToken.name}=${userToken.value}`);
       expect(response.statusCode).to.equal(400);
       expect(response._body).to.have.property("success", false);
@@ -394,49 +368,23 @@ describe("Cart Routes", () => {
     this.timeout(10000);
 
     if (adminUser) {
-      const userEmail = adminUser.email;
-      if (userEmail) {
-        const user = await UserModel.findOne({ email: userEmail });
-        if (user) {
-          await UserModel.deleteOne({ email: userEmail });
-          logger.info(`User with email ${userEmail} deleted`);
-        }
-      }
+      await deleteUserByEmail(adminUser.email);
     }
 
     if (regularUser) {
-      const userEmail = regularUser.email;
-      if (userEmail) {
-        const user = await UserModel.findOne({ email: userEmail });
-        if (user) {
-          await UserModel.deleteOne({ email: userEmail });
-          logger.info(`User with email ${userEmail} deleted`);
-        }
-      }
+      await deleteUserByEmail(regularUser.email);
     }
 
     if (productId) {
-      const product = await ProductModel.findById(productId);
-      if (product) {
-        await ProductModel.deleteOne({ _id: productId });
-        logger.info(`Product with Id ${productId} deleted`);
-      }
+      await deleteProductById(productId);
     }
 
     if (cartId) {
-      const cart = await CartModel.findById(cartId);
-      if (cart) {
-        await CartModel.deleteOne({ _id: cartId });
-        logger.info(`Cart with Id ${cartId} deleted`);
-      }
+      await deleteCartById(cartId);
     }
 
     if (ticketId) {
-      const ticket = await TicketModel.findById(ticketId);
-      if (ticket) {
-        await TicketModel.deleteOne({ _id: ticketId });
-        logger.info(`Ticket with Id ${ticketId} deleted`);
-      }
+      await deleteTicketById(ticketId);
     }
   });
 });
