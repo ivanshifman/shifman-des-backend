@@ -1,14 +1,12 @@
 import Joi from "joi";
 import { isValidNumber } from 'libphonenumber-js';
 
-
 const validatePhone = (phoneNumber, helpers) => {
   if (!isValidNumber(phoneNumber)) { 
     return helpers.error('any.invalid');
   }
   return phoneNumber;
 };
-
 
 const gmailRegex = /^[^\s@]+@gmail\.com$/;
 

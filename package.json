@@ -40,6 +40,8 @@
     "chai": "^5.1.2",
     "mocha": "^10.8.2",
     "nodemon": "^3.1.0",
-    "supertest": "^7.0.0"
+    "supertest": "^7.0.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   }
 }

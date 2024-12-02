@@ -1,0 +1,157 @@
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: access_token
+
+  schemas:
+    RegisterUser:
+      properties:
+        first_name:
+          type: string
+          example: John
+        last_name:
+          type: string
+          example: Doe
+        email:
+          type: string
+          format: email
+          example: johndoe@gmail.com
+        password:
+          type: string
+          format: password
+          example: securepassword123
+        age:
+          type: integer
+          example: 30
+        phone:
+          type: string
+          example: +541181513146
+        countryCode:
+          type: string
+          example: AR
+        role:
+          type: string
+          enum:
+            - user
+            - admin
+          example: user  
+      required:
+        - first_name
+        - last_name
+        - email
+        - password
+        - age
+        - phone
+        - countryCode
+
+    RegisterResponse:
+      type: object
+      properties:
+        success: 
+          type: boolean
+          example: true
+        payload:
+          type: object
+          properties:
+            message:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                  example: John
+                last_name:
+                  type: string
+                  example: Doe
+                email:
+                  type: string
+                  example: johndoe@gmail.com
+                password:
+                  type: string
+                  example: securepassword123
+                age:
+                  type: integer
+                  example: 30
+                phone:
+                  type: string
+                  example: +541181513146
+                countryCode:
+                  type: string
+                  example: AR
+                role:
+                  type: string
+                  example: user  
+ 
+        
+    LoginUser:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: johndoe@gmail.com
+        password:
+          type: string
+          format: password
+          example: securepassword123
+      required:
+        - email
+        - password
+
+    LoginResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        payload:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Session started
+            token:
+              type: string
+              example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+    UserDetailsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        payload:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Welcome
+            user:
+              type: object
+              properties:
+                _id:
+                  type: string
+                  example: 605c3c485b7b3e1e8c9bf7fc
+                first_name:
+                  type: string
+                  example: John
+                last_name:
+                  type: string
+                  example: Doe
+                email:
+                  type: string
+                  example: johndoe@gmail.com
+                role:
+                  type: string
+                  example: user
+                age:
+                  type: integer
+                  example: 30
+                phone:
+                  type: string
+                  example: +123456789
+                countryCode:
+                  type: string
+                  example: US
+                cart_id:
+                  type: string
+                  example: 605c3c485b7b3e1e8c9bf7fe
