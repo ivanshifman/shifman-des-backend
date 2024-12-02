@@ -72,9 +72,13 @@ export const updateProducts = async (req, res) => {
   try {
     const updateProduct = req.body;
     const { id } = req.params;
+    const productById = await service.getProductsById(id);
+    if (!productById) {
+      return res.sendUserError(404, { msg: "Product not found" });
+    }
     const prodUpdate = await service.updateProducts(id, updateProduct);
     if (!updateProduct) {
-      return res.sendUserError(400, { msg: "Product not found" });
+      return res.sendUserError(404, { msg: "Product not found" });
     }
     res.sendSuccess(200, prodUpdate);
   } catch (error) {
@@ -85,8 +89,11 @@ export const updateProducts = async (req, res) => {
 export const deleteProducts = async (req, res) => {
   try {
     const { id } = req.params;
+    const productById = await service.getProductsById(id);
+    if (!productById) {
+      return res.sendUserError(404, { msg: "Product not found" });
+    }
     const deleteProduct = await service.deleteProducts(id);
-    
     if (!deleteProduct) {
       return res.sendUserError(404, { msg: "Product not found" });
     }

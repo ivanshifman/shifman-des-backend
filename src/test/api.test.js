@@ -192,7 +192,6 @@ describe("Product Routes", () => {
         .set("Cookie", `${userToken.name}=${userToken.value}`);
       expect(response.statusCode).to.equal(200);
       expect(response._body).to.have.property("success", true);
-      expect(response._body.payload).to.equal("Updated product");
     });
 
     it("should return validation errors for invalid updates", async () => {

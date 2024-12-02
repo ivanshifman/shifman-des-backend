@@ -1,0 +1,329 @@
+paths:
+  /api/products:
+    get:
+      summary: Get all products
+      tags:
+        - Product
+      description: Retrieve a list of all products with optional pagination, sorting, and filtering by category.
+      parameters:
+        - name: page
+          in: query
+          description: The page number for pagination.
+          required: false
+          schema:
+            type: integer
+            example: 1
+        - name: limit
+          in: query
+          description: The number of products per page.
+          required: false
+          schema:
+            type: integer
+            example: 10
+        - name: category
+          in: query
+          description: Filter products by category.
+          required: false
+          schema:
+            type: string
+            example: "television"
+        - name: sort
+          in: query
+          description: Sort products by price (asc or desc).
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+            example: asc
+      responses:
+        200:
+          description: List of products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductListResponse'
+        404:
+          description: No products found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  details:
+                    type: object
+                    properties:
+                      msg:
+                        type: string  
+
+        500:
+          description: Server error
+
+    post:
+      summary: Add a new product
+      tags:
+        - Product
+      description: Add a new product to the inventory. Only accessible by admins.
+      security:
+        - cookieAuth: []
+      requestBody:
+        description: Product data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        200:
+          description: Product added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponsePost'
+        400:
+          description: Validation error or product could not be added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  details:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: string
+        401:
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  details:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+        403:
+          description: Forbidden request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  details:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+
+        500:
+          description: Server error
+
+  /api/products/{id}:
+    get:
+      summary: Get product by ID
+      tags:
+        - Product
+      description: Retrieve a product by its ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Product details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponsePost'
+        404:
+          description: No products found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  details:
+                    type: object
+                    properties:
+                      msg:
+                        type: string        
+        500:
+          description: Server error
+
+    put:
+      summary: Update a product
+      tags:
+        - Product
+      description: Update an existing product by its ID. Only accessible by admins.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Product data to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProduct'
+      responses:
+        200:
+          description: Product updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponsePost'
+        400:
+          description: Validation error or product could not be added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  details:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: string
+        401:
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  details:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+        403:
+          description: Forbidden request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  details:
+                    type: object
+                    properties:
+                      message:
+                        type: string        
+        404:
+          description: No products found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  details:
+                    type: object
+                    properties:
+                      msg:
+                        type: string  
+        500:
+          description: Server error
+
+    delete:
+      summary: Delete a product
+      tags:
+        - Product
+      description: Delete a product by its ID. Only accessible by admins.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Product deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  payload:
+                    type: string
+
+        401:
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  details:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+        403:
+          description: Forbidden request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  details:
+                    type: object
+                    properties:
+                      message:
+                        type: string        
+        404:
+          description: No products found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  details:
+                    type: object
+                    properties:
+                      msg:
+                        type: string
+        500:
+          description: Server error

@@ -7,6 +7,7 @@ components:
 
   schemas:
     RegisterUser:
+      type: object
       properties:
         first_name:
           type: string
@@ -81,9 +82,11 @@ components:
                   example: AR
                 role:
                   type: string
-                  example: user  
- 
-        
+                  example: user
+                _id:
+                  type: string
+                  example: 605c3c485b7b3e1e8c9bf7fc    
+       
     LoginUser:
       type: object
       properties:
@@ -155,3 +158,126 @@ components:
                 cart_id:
                   type: string
                   example: 605c3c485b7b3e1e8c9bf7fe
+
+    Product:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Motorola Smartphone 1958
+        description:
+          type: string
+          example: moto l1958
+        code:
+          type: string
+          example: SM126
+        price:
+          type: number
+          example: 895
+        stock:
+          type: integer
+          example: 5
+        category:
+          type: string
+          example: phone
+      required: 
+        - title 
+        - description,
+        - code,
+        - price 
+        - stock 
+        - category
+
+    UpdateProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Motorola Smartphone 1958
+        description:
+          type: string
+          example: moto l1958
+        code:
+          type: string
+          example: SM126
+        price:
+          type: number
+          example: 895
+        stock:
+          type: integer
+          example: 5
+        category:
+          type: string
+          example: phone
+
+    ProductResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 605c3c485b7b3e1e8c9bf7fc
+        title:
+          type: string
+          example: Motorola Smartphone 1958
+        description:
+          type: string
+          example: moto l1958
+        code:
+          type: string
+          example: SM126
+        price:
+          type: number
+          example: 895
+        stock:
+          type: integer
+          example: 5
+        category:
+          type: string
+          example: phone
+
+    ProductListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        payload:
+          type: object
+          properties:
+            status:
+              type: boolean
+            payload:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProductResponse'
+            info:
+              type: object
+              properties:
+                count:
+                  type: integer
+                limit:
+                  type: integer
+                page:
+                  type: integer
+                totalPages:
+                  type: integer
+                nextLink:
+                  oneOf:
+                    - type: string
+                    - type: boolean
+                prevLink:
+                  oneOf:
+                    - type: string
+                    - type: boolean
+                hasPrevPage:
+                  type: boolean
+                hasNextPage:
+                  type: boolean              
+
+    ProductResponsePost:
+      type: object
+      properties:
+        success:
+          type: boolean
+        payload:
+          $ref: '#/components/schemas/ProductResponse'
+          

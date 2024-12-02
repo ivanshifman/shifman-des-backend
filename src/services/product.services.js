@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import ProductDao from "../daos/mongoDB/product.dao.js";
 
 const productDao = new ProductDao();
@@ -12,6 +13,9 @@ export const getProducts = async (page, limit, category, sort) => {
 
 export const getProductsById = async (id) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return null;
+    }
     const prod = await productDao.getProductsById(id);
     if (!prod) return null;
     else return prod;
@@ -34,7 +38,7 @@ export const updateProducts = async (id, product) => {
   try {
     const updateProd = await productDao.updateProducts(id, product);
     if (!updateProd) return null;
-    else return "Updated product";
+    else return updateProd;
   } catch (error) {
     throw new Error(error.message);
   }
