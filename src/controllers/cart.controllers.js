@@ -1,4 +1,5 @@
 import * as service from "../services/cart.services.js";
+import { getProductsById } from "../services/product.services.js";
 
 export const getCarts = async (req, res) => {
   try {
@@ -84,6 +85,11 @@ export const addProductInCart = async (req, res) => {
   try {
     const { cartId } = req.params;
     const { prodId } = req.params;
+    const cartById = await service.getCartsById(cartId);
+    const prodById = await getProductsById(prodId);
+    if (!cartById || !prodById) {
+      return res.sendUserError(404, { msg: "Cart or product not found" });
+    }
     const addProductInCart = await service.addProductInCart(cartId, prodId);
     if (!addProductInCart) {
       return res.sendUserError(404, { msg: "Cart or product not found" });
@@ -146,6 +152,10 @@ export const updateQuantityProdInCart = async (req, res) => {
 export const clearCart = async (req, res) => {
   try {
     const { cartId } = req.params;
+    const cartById = await service.getCartsById(cartId);
+    if (!cartById) {
+      return res.sendUserError(404, { msg: "Cart not found" });
+    }
     const emptyCart = await service.clearCart(cartId);
     if (!emptyCart) {
       return res.sendUserError(404, { msg: "Error clear cart" });

@@ -182,8 +182,8 @@ components:
           example: phone
       required: 
         - title 
-        - description,
-        - code,
+        - description
+        - code
         - price 
         - stock 
         - category
@@ -280,4 +280,112 @@ components:
           type: boolean
         payload:
           $ref: '#/components/schemas/ProductResponse'
+
+    ProductInCart:
+      type: object
+      properties:
+        quantity:
+          type: integer
+          example: 5 
+        product:
+          $ref: '#/components/schemas/ProductResponse'
+     
+    ProductInCartQuantity:
+      type: object
+      properties:
+        product:
+          type: string
+          example: 605c3c485b7b3e1e8c9bf7fc
+        quantity:
+          type: integer
+          example: 5 
+
+    ProductInCartQuantityPut:
+      type: object
+      properties:
+        product:
+          type: string
+          example: 605c3c485b7b3e1e8c9bf7fc
+        quantity:
+          type: integer
+          example: 5
+
+    CartListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        payload:
+          type: array
+          items:
+            type: object
+          properties:
+            _id:
+              type: string
+              example: 605c3c485b7b3e1e8c9bf7fc     
+            products:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProductInCartQuantity'
+
+    CartResponseById:
+      type: object
+      properties:
+        success:
+          type: boolean
+        payload:
+          _id:
+            type: string
+            example: 605c3c485b7b3e1e8c9bf7fc     
+          products:
+            type: array
+            items:
+              $ref: '#/components/schemas/ProductInCart'  
+
+    UpdateCart:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductInCartQuantityPut'
+
+    CartResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        payload:
+          _id:
+            type: string
+            example: 605c3c485b7b3e1e8c9bf7fc     
+          products:
+            type: array
+            items:
+              $ref: '#/components/schemas/ProductInCartQuantity'
+
+    CartPurchase:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        payload:
+          type: object
+          properties:
+            code:
+              type: string
+              example: chsxhUSjcdnU68j
+            purchase_datetime:
+              type: string
+              example: Tue Dec 03 2024 02:53:31 GMT-0300
+            amount:
+              type: number
+              example: 800
+            purchaser:
+              type: string
+              example: d83hd98dh083023ed
+            _id:
+              type: string
+              example: fsdf134r313r3erd32                         
           

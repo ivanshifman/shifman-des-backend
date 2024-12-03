@@ -271,7 +271,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        200:
           description: Product deleted successfully
           content:
             application/json:
@@ -282,7 +282,6 @@ paths:
                     type: boolean
                   payload:
                     type: string
-
         401:
           description: Unauthorized request
           content:

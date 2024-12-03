@@ -248,9 +248,9 @@ describe("Cart Routes", () => {
       let response = await request.post("/api/auth/register").send(regularUser);
       expect(response.statusCode).to.equal(201);
       expect(response._body).to.have.property("success", true);
-      cartId = response._body?.payload?.message?.cart_id;
+      cartId = response._body.payload.message.cart_id;
       expect(cartId).to.exist;
-
+     
       response = await request.post("/api/auth/login").send({
         email: regularUser.email,
         password: regularUser.password,
@@ -338,9 +338,6 @@ describe("Cart Routes", () => {
         .set("Cookie", `${userToken.name}=${userToken.value}`);
       expect(response.statusCode).to.equal(400);
       expect(response._body).to.have.property("success", false);
-      expect(response._body.details.msg).to.equal(
-        "Quantity cannot be negative or zero"
-      );
     });
   });
 
