@@ -159,7 +159,7 @@ components:
                   type: string
                   example: 605c3c485b7b3e1e8c9bf7fe
 
-    Product:
+    BaseProduct:
       type: object
       properties:
         title:
@@ -180,60 +180,31 @@ components:
         category:
           type: string
           example: phone
-      required: 
-        - title 
-        - description
-        - code
-        - price 
-        - stock 
-        - category
+
+    Product:
+      allOf:
+        - $ref: '#/components/schemas/BaseProduct'
+        - type: object
+          required:
+            - title
+            - description
+            - code
+            - price
+            - stock
+            - category
 
     UpdateProduct:
-      type: object
-      properties:
-        title:
-          type: string
-          example: Motorola Smartphone 1958
-        description:
-          type: string
-          example: moto l1958
-        code:
-          type: string
-          example: SM126
-        price:
-          type: number
-          example: 895
-        stock:
-          type: integer
-          example: 5
-        category:
-          type: string
-          example: phone
+      allOf:
+        - $ref: '#/components/schemas/BaseProduct'
 
     ProductResponse:
-      type: object
-      properties:
-        _id:
-          type: string
-          example: 605c3c485b7b3e1e8c9bf7fc
-        title:
-          type: string
-          example: Motorola Smartphone 1958
-        description:
-          type: string
-          example: moto l1958
-        code:
-          type: string
-          example: SM126
-        price:
-          type: number
-          example: 895
-        stock:
-          type: integer
-          example: 5
-        category:
-          type: string
-          example: phone
+      allOf:
+        - $ref: '#/components/schemas/BaseProduct'
+        - type: object
+          properties:
+            _id:
+              type: string
+              example: 605c3c485b7b3e1e8c9bf7fc
 
     ProductListResponse:
       type: object
@@ -301,14 +272,7 @@ components:
           example: 5 
 
     ProductInCartQuantityPut:
-      type: object
-      properties:
-        product:
-          type: string
-          example: 605c3c485b7b3e1e8c9bf7fc
-        quantity:
-          type: integer
-          example: 5
+      $ref: '#/components/schemas/ProductInCartQuantity'
 
     CartListResponse:
       type: object
@@ -387,5 +351,58 @@ components:
               example: d83hd98dh083023ed
             _id:
               type: string
-              example: fsdf134r313r3erd32                         
+              example: fsdf134r313r3erd32    
+
+    BaseErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        details:
+          type: object
+          properties:
+            message:
+              type: string
+
+    ValidationErrorRequest:
+      type: object
+      properties:
+        success:
+          type: boolean
+        details:
+          type: object
+          properties:
+            message:
+              type: string
+            details:
+              type: array
+              items:
+                type: string
+
+    ValidationErrorRequestCart:
+      allOf:
+        - $ref: '#/components/schemas/BaseErrorResponse'
+
+    UnauthorizedRequest:
+      allOf:
+        - $ref: '#/components/schemas/BaseErrorResponse'
+
+    ForbiddenRequest:
+      allOf:
+        - $ref: '#/components/schemas/BaseErrorResponse'
+
+    NotFoundRequest:
+      type: object
+      properties:
+        success:
+          type: boolean
+        details:
+          type: object
+          properties:
+            msg:
+              type: string
+
+    ConflictRequest:
+      allOf:
+        - $ref: '#/components/schemas/BaseErrorResponse'                                        
           

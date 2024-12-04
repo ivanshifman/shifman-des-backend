@@ -47,16 +47,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  details:
-                    type: object
-                    properties:
-                      msg:
-                        type: string  
-
+                $ref: '#/components/schemas/NotFoundRequest' 
         500:
           description: Server error
 
@@ -86,47 +77,19 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  details:
-                    type: object
-                    properties:
-                      message:
-                        type: string
-                      details:
-                        type: array
-                        items:
-                          type: string
+                $ref: '#/components/schemas/ValidationErrorRequest'
         401:
           description: Unauthorized request
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  details:
-                    type: object
-                    properties:
-                      message:
-                        type: string
+                $ref: '#/components/schemas/UnauthorizedRequest'
         403:
           description: Forbidden request
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  details:
-                    type: object
-                    properties:
-                      message:
-                        type: string
+                $ref: '#/components/schemas/ForbiddenRequest'
 
         500:
           description: Server error
@@ -155,15 +118,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  details:
-                    type: object
-                    properties:
-                      msg:
-                        type: string        
+                $ref: '#/components/schemas/NotFoundRequest'       
         500:
           description: Server error
 
@@ -199,61 +154,25 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  details:
-                    type: object
-                    properties:
-                      message:
-                        type: string
-                      details:
-                        type: array
-                        items:
-                          type: string
+                $ref: '#/components/schemas/ValidationErrorRequest'
         401:
           description: Unauthorized request
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  details:
-                    type: object
-                    properties:
-                      message:
-                        type: string
+                $ref: '#/components/schemas/UnauthorizedRequest'
         403:
           description: Forbidden request
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  details:
-                    type: object
-                    properties:
-                      message:
-                        type: string        
+                $ref: '#/components/schemas/ForbiddenRequest'       
         404:
           description: No products found
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  details:
-                    type: object
-                    properties:
-                      msg:
-                        type: string  
+                $ref: '#/components/schemas/NotFoundRequest' 
         500:
           description: Server error
 
@@ -287,42 +206,18 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  details:
-                    type: object
-                    properties:
-                      message:
-                        type: string
+                $ref: '#/components/schemas/UnauthorizedRequest'
         403:
           description: Forbidden request
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  details:
-                    type: object
-                    properties:
-                      message:
-                        type: string        
+                $ref: '#/components/schemas/ForbiddenRequest'       
         404:
           description: No products found
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  details:
-                    type: object
-                    properties:
-                      msg:
-                        type: string
+                $ref: '#/components/schemas/NotFoundRequest'
         500:
           description: Server error

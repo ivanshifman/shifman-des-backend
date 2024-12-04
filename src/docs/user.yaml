@@ -4,6 +4,7 @@ paths:
       summary: Register a new user
       tags:
         - Authentication
+      description: Register a new user.  
       requestBody:
         required: true
         content:
@@ -22,47 +23,19 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  details:
-                    type: object
-                    properties:
-                      message:
-                        type: string
-                      details:
-                        type: array
-                        items:
-                          type: string
+                $ref: '#/components/schemas/ValidationErrorRequest'
         401:
           description: Unauthorized request
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  details:
-                    type: object
-                    properties:
-                      message:
-                        type: string
+                $ref: '#/components/schemas/UnauthorizedRequest'
         409:
           description: Conflict request
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  details:
-                    type: object
-                    properties:
-                      message:
-                        type: string
+                $ref: '#/components/schemas/ConflictRequest'
         500:
           description: Server error
 
@@ -71,6 +44,7 @@ paths:
       summary: User login
       tags:
         - Authentication
+      description: Authenticate a user.  
       requestBody:
         required: true
         content:
@@ -89,33 +63,13 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  details:
-                    type: object
-                    properties:
-                      message:
-                        type: string
-                      details:
-                        type: array
-                        items:
-                          type: string
+                $ref: '#/components/schemas/ValidationErrorRequest'
         401:
           description: Unauthorized request
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  details:
-                    type: object
-                    properties:
-                      message:
-                        type: string
+                $ref: '#/components/schemas/UnauthorizedRequest'
         500:
           description: Server error
 
@@ -124,6 +78,7 @@ paths:
       summary: Get current user information
       tags:
         - Authentication
+      description:  Get current user details. 
       security:
         - cookieAuth: []
       responses:
@@ -138,15 +93,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  details:
-                    type: object
-                    properties:
-                      message:
-                        type: string
+                $ref: '#/components/schemas/UnauthorizedRequest'
         500:
           description: Server error
 
@@ -155,6 +102,7 @@ paths:
       summary: Logout the current user
       tags:
         - Authentication
+      description:  Log out the current user. 
       security:
         - cookieAuth: []
       responses:
@@ -177,14 +125,6 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  details:
-                    type: object
-                    properties:
-                      message:
-                        type: string
+                $ref: '#/components/schemas/UnauthorizedRequest'
         500:
           description: Server error
