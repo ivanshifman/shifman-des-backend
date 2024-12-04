@@ -13,7 +13,6 @@ import { initializePassportJwt } from "./passport/passport.config.jwt.js";
 import swaggerUiExpress from "swagger-ui-express";
 import { specs } from "./docs/swaggerOptions.js";
 import MainRouter from "./routes/index.router.js";
-import routerMock from "./1-preEntregaBack3/mocks.router.js";
 
 await initMongoDB();
 
@@ -41,7 +40,6 @@ app.set("views", `${__dirname}/views`);
 
 const mainRouter = new MainRouter();
 app.use("/", mainRouter.getRouter());
-app.use("/api/mocks", routerMock);
 
 if (config.environment === "dev") {
   app.use("/api-docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
