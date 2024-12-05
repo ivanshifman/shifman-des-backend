@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shifman-backend
+  namespace: ecom
+  labels:
+    app: shifman-backend
+spec:
+  selector:
+    matchLabels:
+      app: shifman-backend
+  template:
+    metadata:
+      labels:
+        app: shifman-backend
+    spec:
+      containers:
+      - name: shifman-backend
+        image: ivanshifman/ecommerce:v1.0
+        envFrom:
+        - secretRef:
+            name: ecommerce-secrets
+        - secretRef:
+            name: mongo-url-secret    
+        resources:
+          limits:
+            memory: "1024Mi"
+            cpu: "2000m"
+        ports:
+        - containerPort: 8080
