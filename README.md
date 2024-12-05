@@ -1,4 +1,8 @@
-# Segunda Entrega Final Coderhouse - Proyecto de E-commerce
+# Entrega Final Coderhouse - Proyecto de E-commerce
+
+La imagen de Docker del proyecto se encuentra en el siguiente enlace:
+
+[Imagen de Docker del proyecto](https://hub.docker.com/repository/docker/ivanshifman/ecommerce/general)
 
 El proyecto presenta una aplicación de comercio electrónico desarrollada con Node.js, Express.js, MongoDB. 
 Permite a los usuarios navegar por productos, agregarlos al carrito, y más.
@@ -15,6 +19,9 @@ Permite a los usuarios navegar por productos, agregarlos al carrito, y más.
 - **Validación de Teléfonos:** Emplea libphonenumber-js y country-list para validar números de teléfono.
 - **Manejo de Cookies:** Uso de CookieParser para guardar tokens de autenticación de manera segura.
 - **Manejo de Errores:** El manejo de errores integral garantiza que los usuarios reciban comentarios apropiados por sus acciones.
+- **Testing:** El proyecto utiliza **Supertest**, **Mocha** y **Chai** para realizar pruebas automatizadas de las rutas y funcionalidades de la API.
+- **Logger:** Implementación de **Winston** para un registro detallado de eventos y errores en el sistema.
+- **Seguridad:** Uso de **Helmet** para proteger la aplicación de vulnerabilidades comunes en las aplicaciones web.
 
 ## Tecnologías Utilizadas
 
@@ -27,9 +34,12 @@ Permite a los usuarios navegar por productos, agregarlos al carrito, y más.
 - **Configuración:** Commander
 - **Validación de Teléfonos:** libphonenumber-js, country-list
 - **Manejo de Cookies:** CookieParser
+- **Testing:** Supertest, Mocha, Chai
+- **Logger:** Winston
+- **Seguridad:** Helmet
 
 ### Autor
 
 - Ivan Ezequiel Shifman
 
-- Visita mi perfil en [LinkedIn](https://ar.linkedin.com/in/iv%C3%A1n-ezequiel-shifman-042b0726a) 
+- Visita mi perfil en [LinkedIn](https://ar.linkedin.com/in/iv%C3%A1n-ezequiel-shifman-042b0726a)
