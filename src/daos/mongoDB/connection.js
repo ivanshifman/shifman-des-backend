@@ -6,9 +6,7 @@ const MONGO_URL = config.MONGO_URL;
 
 export const initMongoDB = async () => {
   try {
-    await connect(MONGO_URL, {
-      serverSelectionTimeoutMS: 20000,
-    });
+    await connect(MONGO_URL);
     logger.info("Connected to MongoDB")
   } catch (error) {
     logger.error("Failed to connect to MongoDB", error)
