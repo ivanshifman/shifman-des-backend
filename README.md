@@ -30,7 +30,7 @@ Permite a los usuarios navegar por productos, agregarlos al carrito, y más.
 - **Backend:** Node.js, Express.js
 - **Base de Datos:** MongoDB
 - **Actualizaciones en Tiempo Real:** Socket.io
-- **Autenticación y Autorización:** Passport.js (Local y JWT), JWT propio
+- **Autenticación y Autorización:** Passport.js (Local y JWT), JWT propio.
 - **Validaciones:** Joi
 - **Notificaciones:** Nodemailer, Twilio
 - **Configuración:** Commander
