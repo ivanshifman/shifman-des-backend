@@ -21,7 +21,7 @@ spec:
         - secretRef:
             name: ecommerce-secrets
         - secretRef:
-            name: mongo-url-secret    
+            name: mongo-url-secret  
         resources:
           limits:
             memory: "1024Mi"
