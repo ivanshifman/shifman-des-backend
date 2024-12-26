@@ -5,12 +5,13 @@ import { passportCall } from "../utils/passportCall.js";
 import { validator } from "../middlewares/validatorFieldsJoi.js";
 import { productSchema } from "../dtos/schemasJoi/product.dto.js";
 import { updateProductSchema } from "../dtos/schemasJoi/updateProduct.dto.js";
+import validateId from "../middlewares/validateId.js";
 
 const productsRouter = Router();
 
 productsRouter.get("/", controller.getProducts);
 
-productsRouter.get("/:id", controller.getProductsById);
+productsRouter.get("/:id", validateId, controller.getProductsById);
 
 productsRouter.post(
   "/",
@@ -22,6 +23,7 @@ productsRouter.post(
 
 productsRouter.put(
   "/:id",
+  validateId,
   validator(updateProductSchema),
   passportCall("current"),
   isAdmin,
@@ -30,6 +32,7 @@ productsRouter.put(
 
 productsRouter.delete(
   "/:id",
+  validateId,
   passportCall("current"),
   isAdmin,
   controller.deleteProducts

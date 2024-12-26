@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import CartDao from "../daos/mongoDB/cart.dao.js";
 import ProductDao from "../daos/mongoDB/product.dao.js";
 import { nanoid } from "nanoid";
@@ -16,6 +17,9 @@ export const getCarts = async () => {
 
 export const getCartsById = async (id) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error("Invalid cart ID");
+    }
     const cart = await cartDao.getCartsById(id);
     if (!cart) return null;
     else return cart;
@@ -54,6 +58,10 @@ export const updateCarts = async (cartId, prod) => {
       throw new Error(outOfStockErrors.join("; "));
     }
 
+    if (!mongoose.Types.ObjectId.isValid(cartId)) {
+      throw new Error("Invalid cart ID");
+    }
+
     const updateCart = await cartDao.updateCarts(cartId, prod);
     if (!updateCart) return null;
     else return updateCart;
@@ -74,6 +82,12 @@ export const updateCarts = async (cartId, prod) => {
 
 export const addProductInCart = async (cartId, prodId) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(cartId)) {
+      throw new Error("Invalid cart ID");
+    }
+    if (!mongoose.Types.ObjectId.isValid(prodId)) {
+      throw new Error("Invalid product ID");
+    }
     const existCart = await cartDao.getCartsById(cartId);
     const existProd = await productDao.getProductsById(prodId);
     if (!existCart || !existProd) return null;
@@ -102,6 +116,12 @@ export const addProductInCart = async (cartId, prodId) => {
 
 export const deleteProdInCart = async (cartId, prodId) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(cartId)) {
+      throw new Error("Invalid cart ID");
+    }
+    if (!mongoose.Types.ObjectId.isValid(prodId)) {
+      throw new Error("Invalid product ID");
+    }
     const existCart = await cartDao.getCartsById(cartId);
     const existProd = existCart.products.find(
       (p) => p.product._id.toString() === prodId
@@ -118,6 +138,12 @@ export const deleteProdInCart = async (cartId, prodId) => {
 
 export const updateQuantityProdInCart = async (cartId, prodId, quantity) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(cartId)) {
+      throw new Error("Invalid cart ID");
+    }
+    if (!mongoose.Types.ObjectId.isValid(prodId)) {
+      throw new Error("Invalid product ID");
+    }
     const existCart = await cartDao.getCartsById(cartId);
     const existProd = existCart.products.find(
       (p) => p.product._id.toString() === prodId
@@ -144,6 +170,9 @@ export const updateQuantityProdInCart = async (cartId, prodId, quantity) => {
 
 export const clearCart = async (cartId) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(cartId)) {
+      throw new Error("Invalid cart ID");
+    }
     const existCart = await cartDao.getCartsById(cartId);
     if (!existCart) return null;
     await cartDao.clearCart(cartId);
@@ -155,6 +184,9 @@ export const clearCart = async (cartId) => {
 
 export const finalizePurchase = async (user) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(user.cart_id)) {
+      throw new Error("Invalid cart ID");
+    }
     const cart = await cartDao.getCartsById(user.cart_id);
     if (!cart) return null;
 

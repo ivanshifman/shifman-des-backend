@@ -14,7 +14,7 @@ export const getProducts = async (page, limit, category, sort) => {
 export const getProductsById = async (id) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      return null;
+      throw new Error("Invalid product ID");
     }
     const prod = await productDao.getProductsById(id);
     if (!prod) return null;
@@ -36,6 +36,9 @@ export const addProducts = async (product) => {
 
 export const updateProducts = async (id, product) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error("Invalid product ID");
+    }
     const updateProd = await productDao.updateProducts(id, product);
     if (!updateProd) return null;
     else return updateProd;
@@ -46,6 +49,9 @@ export const updateProducts = async (id, product) => {
 
 export const deleteProducts = async (id) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error("Invalid product ID");
+    }
     const deleteProd = await productDao.deleteProducts(id);
     if (!deleteProd) return null;
     else return "Product deleted";
