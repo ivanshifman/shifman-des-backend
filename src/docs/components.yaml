@@ -274,6 +274,10 @@ components:
     ProductInCartQuantityPut:
       $ref: '#/components/schemas/ProductInCartQuantity'
 
+    ValidationErrorRequestProduct:
+      allOf:
+        - $ref: '#/components/schemas/BaseErrorResponse'
+
     CartListResponse:
       type: object
       properties:

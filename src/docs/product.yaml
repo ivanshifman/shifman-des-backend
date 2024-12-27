@@ -113,6 +113,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProductResponsePost'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorRequestProduct'        
         404:
           description: No products found
           content:
@@ -154,7 +160,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidationErrorRequest'
+                oneOf:
+                  - $ref: '#/components/schemas/ValidationErrorRequest'
+                  - $ref: '#/components/schemas/ValidationErrorRequestProduct'
         401:
           description: Unauthorized request
           content:
@@ -201,6 +209,12 @@ paths:
                     type: boolean
                   payload:
                     type: string
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorRequestProduct'             
         401:
           description: Unauthorized request
           content:
